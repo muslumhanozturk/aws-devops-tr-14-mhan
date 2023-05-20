@@ -267,7 +267,7 @@ aws ec2 run-instances \
 - List the instances filtering with key name
 ```
 aws ec2 describe-instances \
-   --filters "Name = key-name, Values = KEY_NAME_HERE" # put your key name
+   --filters "Name = key-name, Values = KEY _NAME_HERE" # put your key name
 ```
 
 - List the instances only with specific attribute. This command list the Public IP addresses of all EC2
@@ -281,7 +281,7 @@ aws ec2 describe-instances --query "Reservations[].Instances[].PublicIpAddress[]
 aws ec2 describe-instances \
    --filters "Name = key-name, Values = KEY_NAME_HERE" --query "Reservations[].Instances[].PublicIpAddress[]" #put your key name without .pem
 ```
-and 
+and
 
 
 ```
