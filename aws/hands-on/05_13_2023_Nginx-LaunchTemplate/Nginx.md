@@ -117,7 +117,7 @@ systemctl enable nginx
 18. Once Instance is on, check if the Nginx Web Server is working from the web browser.
 19. Connect the Nginx Web Server from the terminal with `curl` command.
 ```
-curl http://ec2-3-15-183-78.us-east-2.compute.amazonaws.com
+
 ```
 
 

@@ -1,7 +1,7 @@
 # Hands-on EC2-05 : Working with EC2 Snapshots
 
 Purpose of the this hands-on training is to teach students how to take a snapshot of EC2 instance, create an image from EC2 instance and using Data Lifecycle Manager. 
-
+Bu uygulamalı eğitimin amacı, öğrencilere EC2 bulut sunucusunun anlık görüntüsünü almayı, EC2 bulut sunucusundan görüntü oluşturmayı ve Veri Yaşam Döngüsü Yöneticisi'ni kullanmayı öğretmektir.
 ## Learning Outcomes
 
 - At the end of the this hands-on training, students will be able to;
@@ -17,6 +17,19 @@ Purpose of the this hands-on training is to teach students how to take a snapsho
 - using the Data Lifecycle Manager 
 
 - coping and sharing AMI
+- Bu uygulamalı eğitim sonunda öğrenciler;
+
+- AWS konsolunda EC2 bulut sunucularının anlık görüntülerini alın.
+
+- AWS konsolunda EC2 bulut sunucularından görüntüler oluşturun.
+
+- görüntü ve anlık görüntü arasındaki farkı anlayın.
+
+- farklı AMI türleri oluşturun.
+
+- Veri Yaşam Döngüsü Yöneticisini kullanma
+
+- AMI ile başa çıkma ve paylaşma
 
 ## Outline
 
@@ -31,6 +44,17 @@ Part 4 - Make AMI Public
 Part 5 - Create Wordpress with AMI (Bitnami)
 
 Part 6 - Using Data Lifecycle Manager 
+Bölüm 1 - Nginx Sunucusunun Anlık Görüntüsünden Bir Görüntü Oluşturma ve Yeni Bir Örnek Başlatma
+
+Bölüm 2 - Bir Görüntü Oluşturma ve Aynı Görüntüden Bir Örnek Başlatma
+
+Bölüm 3 - Kök Birimin Anlık Görüntüsünden Görüntü Oluşturma ve Yeni Bir Örnek Başlatma
+
+Bölüm 4 - AMI'yi Herkese Açık Hale Getirin
+
+Bölüm 5 - AMI (Bitnami) ile Wordpress Oluşturun
+
+Bölüm 6 - Veri Yaşam Döngüsü Yöneticisini Kullanma
 
 ## Part 1 - Creating an Image from the Snapshot of the Nginx Server and Launching a new Instance
 
@@ -39,6 +63,11 @@ Part 6 - Using Data Lifecycle Manager
   a. Security Group: Allow SSH and HTTP ports from anywhere with named "SSH and HTTP"
 
   b. User data (paste user data seen below for Nginx)
+  - Aşağıdaki yapılandırmalarla bir örnek başlatın.
+
+   A. Güvenlik Grubu: Adlandırılmış "SSH ve HTTP" ile her yerden SSH ve HTTP bağlantı noktalarına izin verin
+
+   B. Kullanıcı verileri (Nginx için aşağıda görülen kullanıcı verilerini yapıştırın)
 
   ```text
   #! /bin/bash
