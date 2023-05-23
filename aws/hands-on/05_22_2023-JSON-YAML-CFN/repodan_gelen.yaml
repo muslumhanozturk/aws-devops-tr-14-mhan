@@ -24,4 +24,3 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
 
-
