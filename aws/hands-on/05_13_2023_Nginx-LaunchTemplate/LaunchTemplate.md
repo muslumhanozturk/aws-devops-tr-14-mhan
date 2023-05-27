@@ -39,7 +39,7 @@ Launch_Temp_Sec_group: SSH 22, HTTP 80 ----> anywhere(0.0.0.0/0)
 
 Name                         : MyClaruswayTemplate
 
-Template version description : Origin 
+Template version description : Origin
 
 
 6. Autoscaling Guidance

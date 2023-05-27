@@ -64,7 +64,18 @@ sudo yum install git -y
 ```bash
 sudo yum remove git -y
 ```
-- In some distribution or version dependencies of git can not be deleted with only remove command. That time uninstall git with dependencies on Amazon Linux instance without any interruption.
+- Check the version of git installed on Amazon Linux instance.(There should be no info, because it's just removed a minute ago)
+​
+```bash
+git --version
+```
+- Explain why there is still version info.
+- Install git on Amazon Linux instance without any interruption.
+​
+```bash
+sudo yum install git -y
+```
+- Uninstall git with dependencies on Amazon Linux instance without any interruption.
 ​
 ```bash
 sudo yum autoremove git -y

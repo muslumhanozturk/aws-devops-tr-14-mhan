@@ -35,7 +35,7 @@ env HOME
 - Understanding the shell variable.
 ​
 ```bash
-CLARUS=way   
+CLARUS=way
 env
 set
 set | grep CLARUS

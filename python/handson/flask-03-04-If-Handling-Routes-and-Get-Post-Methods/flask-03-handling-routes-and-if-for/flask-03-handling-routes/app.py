@@ -69,7 +69,7 @@ def greet_admin():
 # and assign to the dynamic route of ('/<name>'). 
 # Please find a template html file named `greet.html` which takes `name` as parameter under `templates` folder 
 @app.route('/<name>')
-def greet2(name):
+def greet(name):
     return render_template('greet.html', name=name)
 
 
@@ -94,5 +94,5 @@ def evens():
 
 # Add a statement to run the Flask application which can be reached from any host on port 80.
 if __name__== "__main__":
-   # app.run(debug=True)
-    app.run(host='0.0.0.0', port=80)
+    app.run(debug=True)
+    # app.run(host='0.0.0.0', port=80)

@@ -74,11 +74,11 @@ sudo mount /dev/xvdf /mnt/mp1/
 ```
 - check if the attached volume is mounted to the mounting point path
 ```
-lsblk   #(sistemdeki tüm disklerin ve bölümlerinin bir listesini alırsınız.)
+lsblk
 ```
 - show the available space, on the mounting point path
 ```
-df -h  #(mevcut dosya sistemlerini ve kullanılan disk alanını görüntüler.)
+df -h
 ```
 - check if there is data on it or not.
 ```
@@ -104,7 +104,7 @@ df -h
 ```
 - resize the file system on the new volume to cover all available space.
 ```
-sudo resize2fs /dev/xvdf  (mevcut bir dosya sisteminin boyutunu değiştirmek için kullanılan bir komuttur)
+sudo resize2fs /dev/xvdf
 ```
 - show the real capacity used currently at mounting path, new capacity should reflect the modified volume size.
 ```
@@ -118,7 +118,7 @@ ls /mnt/mp1/
 
 - show that mounting point path will be gone when instance rebooted 
 ```
-sudo reboot now   ("reboot", bir bilgisayarın veya işletim sisteminin yeniden başlatılması anlamına gelir)
+sudo reboot now
 ```
 - show the new volume is still attached, but not mounted
 ```
@@ -170,7 +170,7 @@ df -h
 ```
 - show the current partitions... use "fdisk -l /dev/xvda" for specific partition
 ```
-sudo fdisk -l  (disk bölümlerini ve disklerin bölüm tablolarını listeleyen bir komuttur)
+sudo fdisk -l
 ```
 
 ## Section 1: Make partition-1
@@ -197,7 +197,7 @@ sudo fdisk /dev/xvdg
  ```
 - format the new partitions
 ```
-sudo mkfs -t ext4 /dev/xvdg1  (mkfs: Yeni bir dosya sistemi oluşturmakiçin -t ext4: Oluşturulacak dosya sisteminin türünü belirtir.)
+sudo mkfs -t ext4 /dev/xvdg1
 sudo mkfs -t ext4 /dev/xvdg2
 ```
 - create a mounting point path for new volume
@@ -293,7 +293,7 @@ sudo reboot now
 ```
 - back up the /etc/fstab file.
 ```
-sudo cp /etc/fstab /etc/fstab.bak    (fstab önemli dosya)
+sudo cp /etc/fstab /etc/fstab.bak
 ```
 - open /etc/fstab file and 
 

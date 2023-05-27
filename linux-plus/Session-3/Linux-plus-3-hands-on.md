@@ -140,14 +140,15 @@ cat /etc/passwd
 ​
 ## Part 3 - User Passwords
 ​
-- passwd-etc/shadow
+- passwd-etc/shadow-etc/login.defs.
 ​
 ```bash
   sudo su
   useradd user8
-  passwd user8 
+  passwd user8
   cd /etc
   cat shadow
+  cat login.defs
 ```
 ​
 ## Part 4 - Group Management
@@ -160,7 +161,7 @@ sudo groupadd linux
 sudo groupadd aws
 sudo groupadd python
 cat /etc/group
-groups user6
+groups
 sudo usermod -a -G linux ec2-user    # append ec2-user in linux group.
 cat /etc/group
 groups
