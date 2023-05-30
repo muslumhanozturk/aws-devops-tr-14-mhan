@@ -1,34 +1,34 @@
-# Hands-on Linux-06 : Shell Scripting Basics
+# Hands-on Linux-06 : Shell Scripting Basics (Kabuk Komut Dosyası Temelleri)
 
-Purpose of the this hands-on training is to teach the students how to script in shell.
+Purpose of the this hands-on training is to teach the students how to script in shell. (Bu uygulamalı eğitimin amacı, öğrencilere kabuk komut dosyası yazmayı öğretmektir.)
 
-## Learning Outcomes
+## Learning Outcomes  (Öğrenme Çıktıları)
 
-At the end of the this hands-on training, students will be able to;
+At the end of the this hands-on training, students will be able to; (Bu uygulamalı eğitimin sonunda, öğrenciler aşağıdaki becerilere sahip olabilecektir:)
 
-- explain shell scripting basics.
+- explain shell scripting basics. (kabuk komut dosyası temellerini açıklayabilirler.)
 
-- explain shell variables.
+- explain shell variables. (kabuk değişkenlerini açıklayabilirler.)
 
-- do simple arithmetic.
+- do simple arithmetic. (basit aritmetik işlemler yapabilirler.)
 
-## Outline
+## Outline (İçerik)
 
-- Part 1 - Shell Scripting Basics
+- Part 1 - Shell Scripting Basics (Bölüm 1 - Kabuk Komut Dosyası Temelleri)
 
-- Part 2 - Shell Variables
+- Part 2 - Shell Variables  (Bölüm 2 - Kabuk Değişkenleri)
 
-- Part 3 - Simple Arithmetic
+- Part 3 - Simple Arithmetic  (Bölüm 3 - Basit Aritmetik)
 
 ## Part 1 - Shell Scripting Basics
 
-- Create a folder and name it shell-scripting.
+- Create a folder and name it shell-scripting.  (Bir klasör oluşturun ve adını shell-scripting olarak belirleyin.)
 
 ```bash
 mkdir shell-scripting && cd shell-scripting
 ```
 
-- Create a `script` file named `basic.sh`. Note all the scripts would have the .sh extension.
+- Create a `script` file named `basic.sh`. Note all the scripts would have the .sh extension. (basic.sh adında bir script dosyası oluşturun. Tüm betiklerin .sh uzantısı olacağını unutmayın.)
 
 ```bash
 #!/bin/bash
@@ -36,21 +36,21 @@ echo "Hello World"
 ```
 
 - Before we add anything else to our script, we need to alert the system that a shell script is being started.
-This is done specifying `#!/bin/bash` on the first line, meaning that the script should always be run with bash, rather than another shell. `#!` is called a `shebang` because the `#` symbol is called a hash, and the `!` symbol is called a bang.
+This is done specifying `#!/bin/bash` on the first line, meaning that the script should always be run with bash, rather than another shell. `#!` is called a `shebang` because the `#` symbol is called a hash, and the `!` symbol is called a bang.  (Başka bir şellden ziyade betiğin her zaman bash ile çalıştırılması gerektiğini belirtmek için ilk satırda #!/bin/bash belirtilmelidir. #! bir shebang olarak adlandırılır çünkü # sembolü hash olarak adlandırılırken, ! sembolü bang olarak adlandırılır.)
 
-- After to save the above content, we need to make the script executable.
+- After to save the above content, we need to make the script executable.(Yukarıdaki içeriği kaydettikten sonra, betiği çalıştırılabilir yapmamız gerekiyor.)
 
 ```bash
 chmod +x basic.sh
 ```
 
-- Then we can execute the `basic.sh`. To execute basic.sh, it is required to add `./` beginning of the `basic.sh`. `./` means we're calling something in the current working directory. We have to specify the path for executables if they're outside our $PATH variable.
+- Then we can execute the `basic.sh`. To execute basic.sh, it is required to add `./` beginning of the `basic.sh`. `./` means we're calling something in the current working directory. We have to specify the path for executables if they're outside our $PATH variable.(Ardından basic.sh'yi çalıştırabiliriz. basic.sh'yi çalıştırmak için, basic.sh'nin başına ./ eklemek gereklidir. ./, mevcut çalışma dizininde bir şey çağırdığımızı belirtir. Eğer yürütülebilir dosyalar $PATH değişkenimizin dışında ise, yürütülebilir dosyalar için yol belirtmemiz gerekmektedir.)
 
 ```bash
 ./basic.sh
 ```
 
-- We can add the other shell commands to our script.
+- We can add the other shell commands to our script. (Diğer kabuk komutlarını betiğimize ekleyebiliriz.)
 
 ```bash
 #!/bin/bash
@@ -68,9 +68,9 @@ ls
 
 ### Shell Comments
 
-- Bash ignores everything written on the line after the hash mark `(#)`. The only exception to this rule is the first line of the script that starts with the `#!` characters. 
+- Bash ignores everything written on the line after the hash mark `(#)`. The only exception to this rule is the first line of the script that starts with the `#!` characters.  (Bash, diyez işareti (#)'den sonra yazılan her şeyi yoksayar. Bu kuralın tek istisnası, #! karakterleriyle başlayan betiğin ilk satırıdır.)
 
-- Comments can be added at the beginning on the line or inline with other code. Let's update `basic.sh`.
+- Comments can be added at the beginning on the line or inline with other code. Let's update `basic.sh`. (Yorumlar satırın başına veya diğer kodlarla birlikte satır içinde eklenabilir. basic.sh'yi güncelleyelim.)
 
 ```bash
 #!/bin/bash
@@ -80,13 +80,13 @@ pwd # This is an inline comment
 # ls
 ```
 
-- Unlike most of the programming languages, Bash doesn’t support multiline comments. But, we can use `here document` for this. In Linux, here document (also commonly referred to as `heredoc`) refers to a special block of code that contains multi-line strings that will be redirected to a command. If the `HereDoc block` is not redirected to a command, it can serve as a multiline comments placeholder.
+- Unlike most of the programming languages, Bash doesn’t support multiline comments. But, we can use `here document` for this. In Linux, here document (also commonly referred to as `heredoc`) refers to a special block of code that contains multi-line strings that will be redirected to a command. If the `HereDoc block` is not redirected to a command, it can serve as a multiline comments placeholder. (Bash, çoğu programlama dilinin aksine çok satırlı yorumları desteklemez. Ancak, bu amaçla here document kullanabiliriz. Linux'ta, bir here document (aynı zamanda heredoc olarak da adlandırılır) çok satırlı dizeleri içeren ve bir komuta yönlendirilebilen özel bir kod bloğudur. Here document bloğu bir komuta yönlendirilmediğinde, çok satırlı bir yorum yer tutucusu olarak kullanılabilir.)
 
 ### HEREDOC syntax
 
-- A heredoc consists of the **<<** `(redirection operator)`, followed by a delimiter token. After the delimiter token, lines of string can be defined to form the content. Finally, the delimiter token is placed at the end to serve as the termination. The delimiter token can be any value as long as it is unique enough that it won’t appear within the content.
+- A heredoc consists of the **<<** `(redirection operator)`, followed by a delimiter token. After the delimiter token, lines of string can be defined to form the content. Finally, the delimiter token is placed at the end to serve as the termination. The delimiter token can be any value as long as it is unique enough that it won’t appear within the content.(Bir here document (heredoc), << (yönlendirme operatörü) ile başlayan ve bir ayrımcı belirteçten oluşur. Ayrımcı belirteçten sonra, dize satırları içeriği oluşturmak için tanımlanabilir. Son olarak, ayrımcı belirteç, sonlandırma olarak kullanılmak üzere en sonda yerleştirilir. Ayrımcı belirteç, içerikte görünmeyecek kadar benzersiz olması koşuluyla herhangi bir değer olabilir.)
 
-- Let's see how to use HereDoc.
+- Let's see how to use HereDoc.(HereDoc kullanımının bir örneğine bir göz atalım)
 
 ```bash
 cat << EOF
@@ -104,12 +104,12 @@ echo "hello"
 pwd # This is an inline comment
 # ls
 
-cat << EOF
+cat << EOF                            (./basic ile çalıştırdığımızda gösterir.)
 Welcome to the Linux Lessons.
 This lesson is about the shell scripting
 EOF
 
-<< multiline-comment
+<< multiline-comment        (./basic ile çalıştırdığımızda göstermez.)
 pwd
 ls
 Everything inside the
@@ -126,11 +126,11 @@ multiline-comment
 
 ## Part 2 - Shell Variables
 
-- A variable is pointer to the actual data. The shell enables us to create, assign, and delete variables.
+- A variable is pointer to the actual data. The shell enables us to create, assign, and delete variables.(Bir değişken, gerçek veriye işaret eden bir işaretçidir. Kabuk, değişkenler oluşturmamıza, atamamıza ve silmemize olanak tanır.)
 
-- The name of a variable can contain only letters (a to z or A to Z), numbers ( 0 to 9) or the underscore character (_) and beginning with a letter or underscore character.
+- The name of a variable can contain only letters (a to z or A to Z), numbers ( 0 to 9) or the underscore character (_) and beginning with a letter or underscore character. (Bir değişkenin adı sadece harflerden (a'dan z'ye veya A'dan Z'ye), rakamlardan (0'dan 9'a) veya alt çizgi karakterinden (_) oluşabilir ve bir harfle veya alt çizgi karakteriyle başlamalıdır.)
 
-- The following examples are valid variable names.
+- The following examples are valid variable names. (İşte geçerli değişken adı örnekleri:)
 
 ```bash
 KEY=value
@@ -138,9 +138,9 @@ _VAR=5
 clarus_way=test
 ```
 
-> Note that there is no space on either side of the equals ( = ) sign. 
+> Note that there is no space on either side of the equals ( = ) sign. (Dikkat edin, eşittir ( = ) işaretinin her iki yanında boşluk bulunmamaktadır.)
 
-- The following examples are invalid.
+- The following examples are invalid. (Aşağıdaki örnekler geçersizdir.)
 
 ```bash
 3_KEY=value
@@ -350,10 +350,10 @@ chmod +x calculator.sh
 read -p "Input first number: " first_number
 read -p "Input second number: " second_number
 
-echo "SUM="`expr $first_number + $second_number`
-echo "SUB="`expr $first_number - $second_number`
-echo "MUL="`expr $first_number \* $second_number`
-echo "DIV="`expr $first_number / $second_number`
+echo "Toplami = $(expr $first_number + $second_number)"
+echo "Cikani = $(expr $first_number - $second_number)"
+echo "Carpimi = $(expr $first_number \* $second_number)"
+echo "Boleni = $(expr $first_number / $second_number)"
 ```
 
 > How can we do with Command Line Arguments?
