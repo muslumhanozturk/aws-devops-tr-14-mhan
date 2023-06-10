@@ -1,0 +1,95 @@
+
+
+Examples of Lifecycle Configuration
+ 
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-configuration-examples.html#lifecycle-config-conceptual-ex7
+
+
+* Lifecycle storage class transitions have the following constraints:
+
+  - Object Size and Transitions from S3 Standard or S3 Standard-IA to S3 Intelligent-Tiering, S3 Standard-IA, or S3 One Zone-IA
+
+  - When you transition objects from the S3 Standard or S3 Standard-IA storage classes to S3 Intelligent-Tiering, S3 Standard-IA, or S3 One Zone-IA, the following object size constraints apply:
+
+  - Larger objects – For the following transitions, there is a cost benefit to transitioning larger objects:
+
+    -- From the S3 Standard or S3 Standard-IA storage classes to S3 Intelligent-Tiering.
+
+    -- From the S3 Standard storage class to S3 Standard-IA or S3 One Zone-IA.
+
+  - Objects smaller than 128 KB – For the following transitions, Amazon S3 does not transition objects that are smaller than 128 KB:
+
+    -- From the S3 Standard or S3 Standard-IA storage classes to S3 Intelligent-Tiering or S3 Glacier Instant Retrieval.
+ 
+    -- From the S3 Standard storage class to S3 Standard-IA or S3 One Zone-IA.
+
+* Minimum Days for Transition from S3 Standard or S3 Standard-IA to S3 Standard-IA or S3 One Zone-IA
+
+  - Before you transition objects from the S3 Standard or S3 Standard-IA storage classes to S3 Standard-IA or S3 One Zone-IA, you must store them at least 30 days in the S3 Standard storage class. For example, you cannot create a Lifecycle rule to transition objects to the S3 Standard-IA storage class one day after you create them. Amazon S3 doesn't transition objects within the first 30 days because newer objects are often accessed more frequently or deleted sooner than is suitable for S3 Standard-IA or S3 One Zone-IA storage.
+
+  - Similarly, if you are transitioning noncurrent objects (in versioned buckets), you can transition only objects that are at least 30 days noncurrent to S3 Standard-IA or S3 One Zone-IA storage.
+
+* Minimum 30-Day Storage Charge for S3 Standard-IA and S3 One Zone-IA
+
+  - The S3 Standard-IA and S3 One Zone-IA storage classes have a minimum 30-day storage charge. Therefore, you can't specify a single Lifecycle rule for both an S3 Standard-IA or S3 One Zone-IA transition and a S3 Glacier Flexible Retrieval or S3 Glacier Deep Archive transition when the S3 Glacier Flexible Retrieval or S3 Glacier Deep Archive transition occurs less than 30 days after the S3 Standard-IA or S3 One Zone-IA transition.
+
+  - The same 30-day minimum applies when you specify a transition from S3 Standard-IA storage to S3 One Zone-IA. You can specify two rules to accomplish this, but you pay minimum storage charges. 
+
+* Triggers for replication are:
+
+  - Uploading objects to the source bucket.
+  - DELETE of objects in the source bucket.
+  - Changes to the object, its metadata, or ACL.
+
+* What is replicated:
+
+  - New objects created after enabling replication.
+  - Changes to objects.
+  - Objects created using SSE-S3 using the AWS managed key.
+  - Object ACL updates.
+
+* What isn’t replicated:
+
+  - Objects that existed before enabling replication (can use the copy API).
+  - Objects created with SSE-C and SSE-KMS.
+  - Objects to which the bucket owner does not have permissions.
+  - Updates to bucket-level subresources.
+  - Actions from lifecycle rules are not replicated.
+  - Objects in the source bucket that are replicated from another region are not replicated.
+
+* Deletion behaviour:
+
+  - If a DELETE request is made without specifying an object version ID a delete marker will be added and replicated.
+  - If a DELETE request is made specifying an object version ID the object is deleted but the delete marker is not replicated.
+
+* Charges:
+
+  - Requests for upload.
+  - Inter-region transfer.
+  - S3 storage in both regions.
+
+
+
+
+* Cross-region replication (CRR) enables automatic, asynchronous copying of objects across buckets in different AWS Regions. Buckets configured for cross-region replication can be owned by the same AWS account or by different accounts.
+
+To put it in simple terms, this feature allows automatic copying of folders and files at the bucket level so the data is available in the new region.
+
+The practical usage is mostly around compliancy of data and making sure data is kept in a dedicated region (for example for GDPR compliance) or to minimize latency for your applications using the S3 bucket.
+
+If your customers are in two geographic locations, you can minimize latency in accessing objects by maintaining object copies in AWS Regions that are geographically closer to your users. This is true also for your applications.
+
+Let's take an example: let's say we have a cluster of servers in a particular region the will serve data from S3 bucket and users will first need to his the app server via some sort of an API.
+
+To minimize latency, we could setup a CDN via CloudFront to serve directly from the closest edges to the customer, and direct all non cached hits to be served from our application cluster in the relevant region. Last, since the application is serving data from S3, we would make sure to point the application to read from the S3 bucket in the same region.
+
+In case on multiple regions we could sync the data between all regions using CRR.
+
+* It’s a common utility for building highly resilient applications. The most challenging part to multi-region deployments is data. Having S3 handle the replication without any servers is a great utility. If you were to do this with more traditional tools, it’s like having rsync running between two remote hosts.
+
+
+* AWS had multi-region replication for a while. The primary purpose of this is to provide extra availability and data locality.
+
+The purpose of the same - region replication (SRR) is entirely different. It’s to help developers (or as Amazon likes to call them “Builders” now) to create solutions, where files play an essential role. Let’s say you have two different apps, that process the same set of files… And now you need to “merge” them together into one solution. In theory, you can modify each app to work in sync with another and, for instance, instead of or deleting or moving into an archive the processed file, wait for another app to finish its step of processing. It can be A LOT of development work, even without possible rollback scenarios.
+
+With SRR you just replicate files into each application’s separate bucket and consider it done. Yes, you might end up paying extra storage costs, but it’s likely nothing, comparing to saving on development/testing and other “human” costs.
