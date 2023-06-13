@@ -35,3 +35,5 @@ echo "Here is the public ip address: $(aws ec2 describe-instances --filters "Nam
 # ssh -i $pem ec2-user@publicip
 
 # sed -i -e 's/\r$//' create-ec2.sh
+
+scp -i /c/Users/mhano/Downloads/Documents/N.Virginia/first-key-pair.pem -r project/ ec2-user@54.236.85.56:/home/ec2-user/Project
