@@ -66,17 +66,19 @@
 
   <h1>Project : Phonebook Application</h1>
   <h2>Welcome to {{developer_name}}'s Phonebook Application</h2>
-  <h2 class="sectionnote">Enter a name to delete</h2>
+  <h2 class="sectionnote">Enter a name and phone number to {{action_name}}</h2>
 
   <form action="#" method="post">
     <label for="name"><b>Name:</b></label>
     <input placeholder="Full Name" type="text" name="username" id="name" required>
-    <button type="submit">Delete</button>
+    <label for="number"><b>Phone Number:</b></label>
+    <input placeholder="1234567890" name="phonenumber" id="number" required />
+    <button type="submit">{{ action_name.title() }}</button>
     {% if not_valid %}
     <p class="warning"><b>{{ message }}</b></p>
     {% endif %}
     {% if show_result %}
-      <h2 class="sectionnote"> {{ result }} </h1>
+      <h2 class="sectionnote"> {{ result_html }} </h1>
     {% endif %}
   </form>
 

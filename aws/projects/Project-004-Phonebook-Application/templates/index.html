@@ -75,7 +75,7 @@
     {% if show_result %}
         <h1>Result for '{{ keyword }}' </h1>
             <ul> 
-            {% for person in persons %}
+            {% for person in persons_html %}
             <li>Name: <b>{{ person['name'] }} </b>  ---- Phone Number: <b>{{ person['number'] }}</b></li>
             {% endfor %}
             </ul>
