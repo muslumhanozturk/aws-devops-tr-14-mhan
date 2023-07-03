@@ -74,7 +74,7 @@ user data       :
 #!/bin/bash
 
 yum update -y
-yum install nginx
+yum install nginx -y
 yum install -y wget
 systemctl enable nginx
 cd /usr/share/nginx/html
