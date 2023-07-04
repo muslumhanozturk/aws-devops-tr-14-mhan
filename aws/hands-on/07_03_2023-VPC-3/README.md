@@ -65,7 +65,7 @@ Security Group    :
 ### E. Configure Private instance in 'clarus-az1a-private-subnet' of 'clarus-vpc-a'.
 
 ```text
-AMI             : Amazon Linux 2
+AMI             : Amazon Linux 2023
 Instance Type   : t2.micro
 Network         : clarus-vpc-a 
 Subnet          : clarus-az1a-private-subnet
