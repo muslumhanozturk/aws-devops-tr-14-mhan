@@ -4,7 +4,7 @@ import boto3
 s3 = boto3.resource('s3')
 
 # Create a new bucket
-s3.create_bucket(Bucket='your-bucket-name-here')
+s3.create_bucket(Bucket='deneme-boto3-bucket')
 
 # Print out all bucket names
 for bucket in s3.buckets.all():
