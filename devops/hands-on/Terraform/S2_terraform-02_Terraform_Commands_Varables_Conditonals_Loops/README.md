@@ -397,6 +397,12 @@ terraform plan
 terraform apply
 ```
 
+- Terminate the resources.
+
+```bash
+terraform destroy
+```
+
 ## Part 3: Conditionals and Loops
 
 ### count
@@ -429,6 +435,10 @@ terraform {
 
 variable "num_of_buckets" {
   default = 2
+}
+
+variable "s3_bucket_name" {
+  default     = "oliver-new-s3-bucket-addwhateveryouwant"
 }
 
 resource "aws_s3_bucket" "tf-s3" {
@@ -479,7 +489,7 @@ variable "users" {
 
 ```go
 resource "aws_s3_bucket" "tf-s3" {
-  # bucket = "var.s3_bucket_name.${count.index}"
+  # bucket = "${var.s3_bucket_name}-${count.index}"
   # count = var.num_of_buckets
   # count = var.num_of_buckets != 0 ? var.num_of_buckets : 1
   for_each = toset(var.users)
