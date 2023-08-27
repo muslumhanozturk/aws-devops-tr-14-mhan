@@ -98,7 +98,7 @@ variable "docker-instance-ports" {
 - Go to the `main.tf` and prepare a config file to create an aws intance with amazon linux 2 ami (kernel 5.10).
 
 ```go
-data "aws_ami" "amazon-linux-2" {
+data "aws_ami" "amazon-linux-2023" {
   owners      = ["amazon"]
   most_recent = true
 
@@ -131,12 +131,12 @@ data "aws_ami" "amazon-linux-2" {
 data "template_file" "userdata" {
   template = file("${abspath(path.module)}/userdata.sh")
   vars = {
-    server-name = var.server-name
+    myserver = var.server-name
   }
 }
 
 resource "aws_instance" "tfmyec2" {
-  ami = data.aws_ami.amazon-linux-2.id
+  ami = data.aws_ami.amazon-linux-2023.id
   instance_type = var.instance_type
   count = var.num_of_instance
   key_name = var.key_name
@@ -193,15 +193,14 @@ output "instance_id" {
 
 ```bash
 #!/bin/bash
-hostnamectl set-hostname ${server-name}
-yum update -y
-amazon-linux-extras install docker -y
+hostnamectl set-hostname ${myserver}
+dnf update -y
+dnf install docker -y
 systemctl start docker
 systemctl enable docker
 usermod -a -G docker ec2-user
 # install docker-compose
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" \
--o /usr/local/bin/docker-compose
+curl -SL https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -226,7 +225,6 @@ crash.log
 # control as they are data points which are potentially sensitive and subject
 # to change depending on the environment.
 *.tfvars
-
 ```
 
 - Go to the `README.md` and make a description of your module.
@@ -307,7 +305,7 @@ provider "aws" {
 }
 
 module "docker-instance" {
-  source  = "clarusway/docker-instance/aws"
+  source  = "<github-username>/docker-instance/aws"
   key_name = "clarusway"
 }
 ```
