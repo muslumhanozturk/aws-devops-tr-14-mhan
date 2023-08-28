@@ -368,11 +368,11 @@ resource "aws_instance" "tfmyec2" {
 variable "myami" {
   type = map(string)
   default = {
-    default = "ami-0cff7528ff583bf9a"
-    dev     = "ami-06640050dc3f556bb"
-    prod    = "ami-08d4ac5b634553e16"
+    default = "ami-051f7e7f6c2f40dc1"
+    dev     = "ami-026ebd4cfe2c043b2"
+    prod    = "ami-053b0d53c279acc90"
   }
-  description = "in order of aAmazon Linux 2 ami, Red Hat Enterprise Linux 8 ami and Ubuntu Server 20.04 LTS amis"
+  description = "in order of an Amazon Linux 2023 ami, Red Hat Enterprise Linux 8 ami, and Ubuntu Server 22.04 LTS ami's"
 }
 ```
 

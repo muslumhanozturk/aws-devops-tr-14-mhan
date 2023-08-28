@@ -191,7 +191,7 @@ terraform destroy -auto-approve
 
 - Create two EC2 instances one's ami is `Amazon Linux 2023` and the other is `Ubuntu 22.04`. Their tags will be `Name=aws-linux-2023` and `Name=ubuntu-22.04`. Attach security group to these instances.
 
-- Create a folder name `learn-terraform-import` and enter the directory.
+- Create a folder name `terraform-import` and enter the directory.
 
 ```
 mkdir terraform-import
@@ -222,7 +222,7 @@ provider "aws" {
 
 variable "tf-ami" {
   type = list(string)
-  default = ["ami-08a52ddb321b32a8c", "ami-053b0d53c279acc90", "ami-026ebd4cfe2c043b2"]
+  default = ["ami-051f7e7f6c2f40dc1", "ami-053b0d53c279acc90", "ami-026ebd4cfe2c043b2"]
 }
 
 variable "tf-tags" {
