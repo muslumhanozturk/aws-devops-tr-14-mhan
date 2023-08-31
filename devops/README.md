@@ -1,6 +1,6 @@
-# clarusway-devops-13-23:
+# clarusway-devops-14-23:
 
-This private workshop repository contains projects, hands-on training, coding challenges, and class-notes for the Clarusway Students of AWS & DevOps-13.
+This private workshop repository contains projects, hands-on training, coding challenges, and class-notes for the Clarusway Students of AWS & DevOps-14.
 
 ## Description
 
