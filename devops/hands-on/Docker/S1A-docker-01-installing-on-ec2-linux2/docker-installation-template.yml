@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Description: >
   This Cloudformation Template creates a Docker machine on EC2 Instance. 
-  Docker Machine will run on Amazon Linux 2 (ami-026dea5602e368e96) EC2 Instance with
+  Docker Machine will run on Amazon Linux 2023 (ami-051f7e7f6c2f40dc1) EC2 Instance with
   custom security group allowing SSH connections from anywhere on port 22.
 
 Parameters:
@@ -28,7 +28,7 @@ Resources:
   DockerMachine:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-09d95fab7fff3776c
+      ImageId: ami-051f7e7f6c2f40dc1
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
       SecurityGroupIds:
@@ -39,16 +39,15 @@ Resources:
           Value: !Sub Docker Machine of ${AWS::StackName}   
       UserData:
         Fn::Base64: |
-          #! /bin/bash
-          yum update -y
-          yum install docker -y
+          #!/bin/bash
+          hostnamectl set-hostname docker_instance
+          dnf update -y
+          dnf install docker -y
           systemctl start docker
           systemctl enable docker
           usermod -a -G docker ec2-user
-          newgrp docker
           # install docker-compose
-          curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" \
-          -o /usr/local/bin/docker-compose
+          curl -SL https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
 Outputs:
   WebsiteURL:

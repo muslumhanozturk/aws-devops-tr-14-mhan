@@ -128,20 +128,13 @@ data "aws_ami" "amazon-linux-2023" {
   }
 }
 
-data "template_file" "userdata" {
-  template = file("${abspath(path.module)}/userdata.sh")
-  vars = {
-    myserver = var.server-name
-  }
-}
-
 resource "aws_instance" "tfmyec2" {
   ami = data.aws_ami.amazon-linux-2023.id
   instance_type = var.instance_type
   count = var.num_of_instance
   key_name = var.key_name
   vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]
-  user_data = data.template_file.userdata.rendered
+  user_data = templatefile("${abspath(path.module)}/userdata.sh", {myserver = var.server-name})
   tags = {
     Name = var.tag
   }
