@@ -86,7 +86,7 @@ docker container inspect clarus2nd | grep IPAddress
 - Connect to the `clarus1st` container.
 
 ```bash
-docker container attach clarus1st
+docker exec -it clarus1st sh
 ```
 
 - Show the details of network interface configuration of `clarus1st` container.
@@ -181,7 +181,7 @@ docker network inspect bridge
 - Connect to the `clarus1st` container.
 
 ```bash
-docker attach clarus1st
+docker exec -it clarus1st ash
 ```
 
 - Ping `clarus2nd` and `clarus4th` container by its name to show that in user-defined network, container names can be used in networking.
@@ -209,7 +209,7 @@ ping -c 4 google.com
 - Connect to the `clarus4th` container, since it is in both network should connect all containers.
 
 ```bash
-docker container attach clarus4th
+docker container exec -it clarus4th ash
 ```
 
 - Ping `clarus2nd` and `clarus1st` container by its name, ping `clarus3rd` container with its IP. Explain why used IP, instead of name.
