@@ -39,7 +39,7 @@ ssh -i .ssh/call-training.pem ec2-user@ec2-3-133-106-98.us-east-2.compute.amazon
 - Download the current stable release of `Docker Compose` executable.
 
 ```bash
-curl -SL https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+curl -SL https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 ```
 
 - Apply executable permissions to the binary:
@@ -48,7 +48,7 @@ curl -SL https://github.com/docker/compose/releases/download/v2.16.0/docker-comp
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-- Check if the `Docker Compose`is working. Should see something like `docker-compose version 1.26.2, build 1110ad01`
+- Check if the `Docker Compose`is working. Should see something like `docker-compose version v2.20.3, build 1110ad01`
 
 ```bash
 docker-compose --version
@@ -129,7 +129,7 @@ CMD ["flask", "run"]
 
 - Create a file called `docker-compose.yml` in your project folder and define services and explain services.
 
-```text
+```sh
 This Compose file defines two services: web and redis.
 
 ### Web service
@@ -139,7 +139,7 @@ The web service uses an image that’s built from the Dockerfile in the current 
 The redis service uses a public Redis image pulled from the Docker Hub registry.
 ```
 
-```bash
+```yml
 version: "3"
 services:
   web:
@@ -152,7 +152,7 @@ services:
 
 - Build and run your app with `Docker Compose` and explains what is happening.
 
-```text
+```yml
 Docker compose pulls a Redis image, builds an image for our the app code,
 and starts the services defined. In this case, the code is statically copied into the image at build time.
 ```
