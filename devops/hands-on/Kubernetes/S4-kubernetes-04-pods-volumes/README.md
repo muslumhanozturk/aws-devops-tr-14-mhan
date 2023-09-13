@@ -1,4 +1,4 @@
-# Hands-on Kubernetes-04 : Kubernetes Volumes 
+# Hands-on Kubernetes-04 : Kubernetes Volumes
 
 Purpose of this hands-on training is to give students the knowledge of Kubernetes Volumes.
 
