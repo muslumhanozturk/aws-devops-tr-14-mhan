@@ -114,7 +114,7 @@ The image contains all the dependencies for the application, including Python it
 8. Set the default command for the container to flask run.
 ```
 
-```bash
+```Dockerfile
 FROM python:3.7-alpine
 WORKDIR /code
 ENV FLASK_APP app.py
@@ -139,7 +139,7 @@ The web service uses an image that’s built from the Dockerfile in the current 
 The redis service uses a public Redis image pulled from the Docker Hub registry.
 ```
 
-```bash
+```yaml
 version: "3"
 services:
   web:
