@@ -20,6 +20,8 @@ At the end of the this hands-on training, students will be able to;
 
 - Part 4 - EmptyDir
 
+- Part 5 - StorogeClass
+
 ## Part 1 - Setting up the Kubernetes Cluster
 
 - Launch a Kubernetes Cluster of Ubuntu 20.04 with two nodes (one master, one worker) using the [Cloudformation Template to Create Kubernetes Cluster](../kubernetes-02-basic-operations/cfn-template-to-create-k8s-cluster.yml). *Note: Once the master node up and running, worker node automatically joins the cluster.*
@@ -434,4 +436,105 @@ Hello World
 
 ```bash
 kubectl delete pod nginx-pod
+```
+
+## Part 5 - StorogeClass
+
+- Firstly, check the StorageClass object in the cluster. 
+
+```bash
+kubectl get sc
+
+kubectl describe sc local-path
+```
+
+- Create a persistentvolumeclaim with the following settings.
+
+```bash
+vi sc-pv-claim.yaml
+```
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sc-pv-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+  storageClassName: local-path
+```
+
+```bash
+kubectl apply -f sc-pv-claim.yaml
+```
+
+- List the pv and pvc and explain the connections.
+
+```bash
+kubectl get pv,pvc
+```
+- You will see an output like this
+
+```text
+NAME          STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+sc-pv-claim   Pending                                      local-path     5s
+```
+
+- Create a pod with the following settings.
+
+```bash
+vi pod-with-dynamic-storage.yaml
+```
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-sc
+  labels:
+    app : web-nginx
+spec:
+  containers:
+  - image: nginx:latest
+    ports:
+    - containerPort: 80
+    name: test-sc
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: aws-pd
+  volumes:
+  - name: aws-pd
+    persistentVolumeClaim:
+      claimName: sc-pv-claim
+```
+
+```bash
+kubectl apply -f pod-with-dynamic-storage.yaml
+```
+
+- List the pv and pvc, notice that pv is created manually.
+
+```bash
+kubectl get pv,pvc
+```
+
+- You will get an output like below.
+
+```bash
+NAME                                                        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   REASON   AGE
+persistentvolume/pvc-d034e159-f1a6-4ad0-82b3-ab05239c1cba   3Gi        RWO            Delete           Bound    default/sc-pv-claim   local-path              2m25s
+
+NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+persistentvolumeclaim/sc-pv-claim   Bound    pvc-d034e159-f1a6-4ad0-82b3-ab05239c1cba   3Gi        RWO            local-path     3m50s
+```
+
+- You can check the pvc under the `/opt/local-path-provisioner` folder in the worker node.
+
+- Delete the pod and pvc.
+
+```bash
+kubectl delete -f pod-with-dynamic-storage.yaml
+kubectl delete -f sc-pv-claim.yaml
 ```
