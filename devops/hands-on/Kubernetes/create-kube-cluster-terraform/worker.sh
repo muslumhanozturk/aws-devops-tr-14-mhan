@@ -3,10 +3,10 @@ apt-get update -y
 apt-get upgrade -y
 hostnamectl set-hostname kube-worker
 apt-get install -y apt-transport-https ca-certificates curl
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
 apt-get update
-apt-get install -y kubelet=1.28.1-00 kubeadm=1.28.1-00 kubectl=1.28.1-00 kubernetes-cni docker.io
+apt-get install -y kubelet=1.28.2-1.1 kubeadm=1.28.2-1.1 kubectl=1.28.2-1.1 kubernetes-cni docker.io
 apt-mark hold kubelet kubeadm kubectl
 systemctl start docker
 systemctl enable docker
@@ -19,7 +19,7 @@ net.ipv4.ip_forward                 = 1
 EOF
 sysctl --system
 mkdir /etc/containerd
-containerd config default | sudo tee /etc/containerd/config.toml >/dev/null 2>&1
+containerd config default | tee /etc/containerd/config.toml >/dev/null 2>&1
 sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
 systemctl restart containerd
 systemctl enable containerd

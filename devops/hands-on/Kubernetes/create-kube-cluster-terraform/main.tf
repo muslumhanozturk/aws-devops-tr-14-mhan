@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -20,7 +20,7 @@ locals {
   name = "clarusway"
   keyname = "clarus"
   instancetype = "t3a.medium"
-  ami = "ami-0557a15b87f6559cf"
+  ami = "ami-053b0d53c279acc90"
 }
 
 resource "aws_instance" "master" {
