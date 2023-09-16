@@ -102,7 +102,7 @@ kind: Deployment
 metadata:
   name: web-flask-deploy
   labels:
-    app: web-flask-deploy
+    env: dev
 spec:
   replicas: 3 
   selector:  
@@ -219,7 +219,7 @@ kind: Service
 metadata:
   name: web-flask-svc
   labels:
-    app: web-flask-svc
+    env: dev
 spec:
   type: ClusterIP  
   ports:
@@ -289,7 +289,7 @@ kind: Service
 metadata:
   name: web-flask-svc
   labels:
-    app: web-flask-svc
+    env: dev
 spec:
   type: NodePort  
   ports:
@@ -329,7 +329,7 @@ kind: Service
 metadata:
   name: web-flask-svc
   labels:
-    app: web-flask-svc
+    env: dev
 spec:
   type: NodePort 
   ports:
@@ -421,7 +421,7 @@ kind: Deployment
 metadata:
   name: web-flask-deploy
   labels:
-    app: web-flask-deploy
+    env: dev
   namespace: demo
 spec:
   replicas: 3
@@ -455,7 +455,7 @@ metadata:
   name: web-flask-svc
   namespace: demo
   labels:
-    app: web-flask-svc
+    env: dev
 spec:
   type: NodePort
   ports:
