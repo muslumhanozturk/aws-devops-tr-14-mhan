@@ -1,4 +1,4 @@
-# Hands-on Kubernetes-05-a : Managing Secrets and ConfigMaps
+# Hands-on Kubernetes-05 : Managing Secrets and ConfigMaps
 
 Purpose of the this hands-on training is to give students the knowledge of Kubernetes Secrets and config-map
 
@@ -686,84 +686,107 @@ demo-config   1      15m
 kubectl delete cm demo-config 
 ```
 
-## Using ConfigMaps as files from a Pod 
+## Using ConfigMaps as volumes in a Pod 
 
-- Update the `configmap.yaml`.
+- Create an `nginx-configmap.yaml`.
 
 ```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: demo-config
+  name: nginx-config
 data:
-  config: |
-    greeting: Buongiorno
+  content: |
+    Welcome to the kubertes Lessons.
 ```
 
-- We have modifed our application to read parameters from the file. So the `deployment` file changed as follows:
+- Create the configmap.
+
+```bash
+kubectl apply -f nginx-configmap.yaml
+```
+
+- Create an `nginx-deployment.yaml` file as follows:
 
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo
+  name: nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo
+      app: nginx
   template:
     metadata:
       labels:
-        app: demo
+        app: nginx
     spec:
       containers:
-        - name:  demo
-          image: clarusway/demo:hello-config-file
+        - name:  nginx
+          image: nginx:latest
           ports:
-            - containerPort: 8888
+            - containerPort: 80
           volumeMounts:
-          - mountPath: /config/
-            name: demo-config-volume
+          - mountPath: /usr/share/nginx/html/
+            name: nginx-config-volume
             readOnly: true
       volumes:
-      - name: demo-config-volume
+      - name: nginx-config-volume
         configMap:
-          name: demo-config
+          name: nginx-config
           items:
-          - key: config
-            path: demo.yaml
+          - key: content
+            path: index.html
 ```
 
-- Volume and volume mounting are common ways to place config files inside a container. We are selecting `config` key from `demo-config` ConfigMap and put it inside the container at path `/config/` with the name `demo.yaml`.
+- Volume and volume mounting are common ways to place config files inside a container. We are selecting `content` key from `nginx-config` ConfigMap and put it inside the container at path `/usr/share/nginx/html/` with the name `index.html`.
 
 - Apply and run all the configurations as follow:
 
 ```bash
-kubectl apply -f deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+```
 
-kubectl get po
-NAME                   READY   STATUS    RESTARTS   AGE
-demo-77496d887-rhkww   1/1     Running   0          4s
+- Create an `nginx-service.yaml` file as follows:
 
-kubectl apply -f service.yaml 
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    app: nginx
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30002    
+  selector:
+    app: nginx
+```
 
-kubectl get svc -o wide
-NAME           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE   SELECTOR
-demo-service   NodePort    10.108.181.197   <none>        80:30001/TCP   11s   app=demo
-kubernetes     ClusterIP   10.96.0.1        <none>        443/TCP        14h   <none>
+- Create the service.
 
-curl < worker-ip >:30001
-Buongiorno, Clarusway!
+```bash
+kubectl apply -f nginx-service.yaml 
+```
+
+- Check the result.
+
+```bash
+curl < worker-ip >:30002
+Welcome to the kubertes Lessons.
 ```
 
 - Reset what we have created.
 
 ```bash
-kubectl get cm
-kubectl delete cm demo-config 
-kubectl delete -f service.yaml
-kubectl delete -f deployment.yaml
+kubectl delete -f nginx-configmap.yaml
+kubectl delete -f nginx-service.yaml
+kubectl delete -f nginx-deployment.yaml
 ```
 
 ### Optional
