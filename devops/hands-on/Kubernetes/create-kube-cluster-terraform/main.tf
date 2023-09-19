@@ -18,7 +18,7 @@ data "aws_region" "current" {}
 locals {
   # change here, optional
   name = "clarusway"
-  keyname = "second-key-pair"
+  keyname = "clarus"
   instancetype = "t3a.medium"
   ami = "ami-053b0d53c279acc90"
 }
@@ -28,7 +28,7 @@ resource "aws_instance" "master" {
   instance_type        = local.instancetype
   key_name             = local.keyname
   iam_instance_profile = aws_iam_instance_profile.ec2connectprofile.name
-  user_data            = data.template_file.master.rendered
+  user_data            = file("master.sh")
   vpc_security_group_ids = [aws_security_group.tf-k8s-master-sec-gr.id]
   tags = {
     Name = "${local.name}-kube-master"
@@ -41,7 +41,7 @@ resource "aws_instance" "worker" {
   key_name             = local.keyname
   iam_instance_profile = aws_iam_instance_profile.ec2connectprofile.name
   vpc_security_group_ids = [aws_security_group.tf-k8s-master-sec-gr.id]
-  user_data            = data.template_file.worker.rendered
+  user_data            = templatefile("worker.sh", { region = data.aws_region.current.name, master-id = aws_instance.master.id, master-private = aws_instance.master.private_ip} )
   tags = {
     Name = "${local.name}-kube-worker"
   }
@@ -93,20 +93,6 @@ resource "aws_iam_role" "ec2connectcli" {
       ]
     })
   }
-}
-
-data "template_file" "worker" {
-  template = file("worker.sh")
-  vars = {
-    region = data.aws_region.current.name
-    master-id = aws_instance.master.id
-    master-private = aws_instance.master.private_ip
-  }
-
-}
-
-data "template_file" "master" {
-  template = file("master.sh")
 }
 
 resource "aws_security_group" "tf-k8s-master-sec-gr" {

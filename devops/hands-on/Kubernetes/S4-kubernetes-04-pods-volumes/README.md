@@ -448,6 +448,12 @@ kubectl get sc
 kubectl describe sc local-path
 ```
 
+- Create a folder and name it storageclass.
+
+```bash
+mkdir storageclass && cd storageclass
+```
+
 - Create a persistentvolumeclaim with the following settings.
 
 ```bash

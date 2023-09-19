@@ -560,8 +560,8 @@ kubectl create namespace <namespace-name>
 - Create pods in each namespace.
 
 ```bash
-kubectl create deployment default-ns --image=nginx
-kubectl create deployment clarus-ns --image=nginx -n=clarus-namespace
+kubectl create deployment mynginx --image=nginx
+kubectl create deployment myapache --image=httpd -n=clarus-namespace
 ```
 
 - List the deployments in `default` namespace.
