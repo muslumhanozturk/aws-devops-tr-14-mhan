@@ -565,7 +565,7 @@ Hola, Clarusway!
 kubectl delete -f k8s
 ```
 
-## Configure all key-value pairs in a ConfigMap as container environment variables in POSIX format
+## Configure all key-value pairs in a ConfigMap as container environment variables
 
 - In case if you are using envFrom  instead of env  to create environmental variables in the container, the environmental names will be created from the ConfigMap's keys. If a ConfigMap  key has invalid environment variable name, it will be skipped but the pod will be allowed to start. 
 
