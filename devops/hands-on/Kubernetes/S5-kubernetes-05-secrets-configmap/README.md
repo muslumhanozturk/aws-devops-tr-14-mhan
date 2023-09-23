@@ -25,7 +25,7 @@ At the end of the this hands-on training, students will be able to;
 - Launch a Kubernetes Cluster of Ubuntu 20.04 with two nodes (one master, one worker) using the [Cloudformation Template to Create Kubernetes Cluster](../kubernetes-02-basic-operations/cfn-template-to-create-k8s-cluster.yml). *Note: Once the master node up and running, worker node automatically joins the cluster.*
 
 >*Note: If you have problem with kubernetes cluster, you can use this link for lesson.*
->https://www.katacoda.com/courses/kubernetes/playground
+>https://killercoda.com/playgrounds
 
 - Check if Kubernetes is running and nodes are ready.
 
@@ -686,7 +686,7 @@ demo-config   1      15m
 kubectl delete cm demo-config 
 ```
 
-## Using ConfigMaps as volumes in a Pod 
+## Using ConfigMaps as volumes in a Pod
 
 - Create an `nginx-configmap.yaml`.
 
@@ -788,6 +788,69 @@ kubectl delete -f nginx-configmap.yaml
 kubectl delete -f nginx-service.yaml
 kubectl delete -f nginx-deployment.yaml
 ```
+
+### Optional
+
+#### Using Secret as volumes in a Pod
+
+- Check the mysecret.
+
+```bash
+kubectl get secret mysecret -o yaml
+```
+
+- Update `nginx-deployment.yaml` as below.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name:  nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - mountPath: /usr/share/nginx/html/
+            name: nginx-config-volume
+            readOnly: true
+          - mountPath: /test
+            name: secret-volume
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+          items:
+          - key: content
+            path: index.html
+      - name: secret-volume
+        secret:
+          secretName: mysecret
+```
+
+- Check the test folder inside the pod.
+
+```bash
+kubectl get pod
+kubectl exec -it nginx-5b74bf97f-r6vw6 -- bash
+cd /test
+ls
+cat password
+cat username
+```
+
+- Notice that names of files inside the test folder are the `keys of mysecret` object and content of files are `values of mysecret` object`.
 
 ### Optional
 

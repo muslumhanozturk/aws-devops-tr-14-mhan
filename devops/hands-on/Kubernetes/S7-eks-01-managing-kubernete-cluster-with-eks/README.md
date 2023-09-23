@@ -23,7 +23,7 @@ At the end of this hands-on training, students will be able to;
 
 ## Prerequisites
 
-- Launch an AWS EC2 instance of Amazon Linux 2 AMI with security group allowing SSH.
+- Launch an AWS EC2 instance of Amazon Linux 2023 AMI with security group allowing SSH.
 
 - Connect to the instance with SSH.
 
@@ -33,10 +33,10 @@ At the end of this hands-on training, students will be able to;
 sudo yum update -y
 ```
 
-- Download the Amazon EKS vended kubectl binary that is compatible with kubernetes cluster version.
+- Download the Amazon EKS vended kubectl binary that is compatible with kubernetes cluster version. For instructions, see [Installing or updating kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html).
 
 ```bash
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.7/2023-03-17/bin/linux/amd64/kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.5/2023-09-14/bin/linux/amd64/kubectl
 ```
 
 - Apply execute permissions to the binary.
@@ -107,8 +107,7 @@ aws eks list-clusters
     - On the ```Cluster Service Role``` field; give general description about why we need this role. 
 
     - Create EKS Cluster Role with ```EKS - Cluster``` use case and ```AmazonEKSClusterPolicy```.
-                
-        - EKS Cluster Role :                                                                                              
+        - EKS Cluster Role:
            - use case   :  ```EKS - Cluster``` 
            - permissions: ```AmazonEKSClusterPolicy```.
 
@@ -301,18 +300,18 @@ kubectl -n kube-system edit deployment.apps/cluster-autoscaler
 
 This command will open the yaml file for your editting. Replace <CLUSTER NAME> value with your own cluster name, and add the following command option ```--skip-nodes-with-system-pods=false``` to the command section under ```containers``` under ```spec```. Save and exit the file by pressing ```:wq```. The changes will be applied.
 
-7. Find an appropriate version of your cluster autoscaler in the [link](https://github.com/kubernetes/autoscaler/releases). The version number should start with version number of the cluster Kubernetes version. For example, if you have selected the Kubernetes version 1.25, you should find something like ```1.25.0```.
+7. Find an appropriate version of your cluster autoscaler in the [link](https://github.com/kubernetes/autoscaler/releases). The version number should start with version number of the cluster Kubernetes version. For example, if you have selected the Kubernetes version 1.27, you should find something like ```1.27.3```.
 
 8. Then, in the following command, set the Cluster Autoscaler image tag as that version you have found in the previous step.
 
 ```bash
-kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=k8s.gcr.io/autoscaling/cluster-autoscaler:<YOUR-VERSION-HERE>
+kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=registry.k8s.io/autoscaling/cluster-autoscaler:<YOUR-VERSION-HERE>
 ```
 
 For example:
 
 ```bash
-kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=k8s.gcr.io/autoscaling/cluster-autoscaler:v1.25.1
+kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=registry.k8s.io/autoscaling/cluster-autoscaler:v1.27.3
 ```
 
 ## Part 5 - Deploying a Sample Application

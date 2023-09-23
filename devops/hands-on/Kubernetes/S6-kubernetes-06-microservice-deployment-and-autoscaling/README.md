@@ -200,7 +200,7 @@ spec:
               memory: 250Mi
               cpu: 80m		  
 ```
-- Note that this web app is connnected to MongoDB host/service via the `DBHOST` environment variable. What does `db-service:27017` mean here. How is the IP resolution handled?
+- Note that this web app is connnected to MongoDB host/service via the `DBHOST` environment variable. What does `db-service` mean here. How is the IP resolution handled?
 
 - When should we use `imagePullPolicy: Always`. Explain the `image` pull policy shortly.
 
