@@ -63,7 +63,7 @@ echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 kubectl version --short --client
 ```
 
-- Configure AWS credentials. Or you can attach `AWS IAM Role` to your EC2 instance.
+- Configure AWS credentials.
 
 ```bash
 aws configure
