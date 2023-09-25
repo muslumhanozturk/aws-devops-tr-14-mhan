@@ -286,13 +286,7 @@ kubectl get nodes --watch
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
 ```
 
-5. Add an annotation to the deployment with the following command.
-
-```bash
-kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autoscaler.kubernetes.io/safe-to-evict="false"
-```
-
-6. Edit the Cluster Autoscaler deployment with the following command.
+5. Edit the Cluster Autoscaler deployment with the following command.
 
 ```bash
 kubectl -n kube-system edit deployment.apps/cluster-autoscaler
@@ -300,9 +294,9 @@ kubectl -n kube-system edit deployment.apps/cluster-autoscaler
 
 This command will open the yaml file for your editting. Replace <CLUSTER NAME> value with your own cluster name, and add the following command option ```--skip-nodes-with-system-pods=false``` to the command section under ```containers``` under ```spec```. Save and exit the file by pressing ```:wq```. The changes will be applied.
 
-7. Find an appropriate version of your cluster autoscaler in the [link](https://github.com/kubernetes/autoscaler/releases). The version number should start with version number of the cluster Kubernetes version. For example, if you have selected the Kubernetes version 1.27, you should find something like ```1.27.3```.
+6. Find an appropriate version of your cluster autoscaler in the [link](https://github.com/kubernetes/autoscaler/releases). The version number should start with version number of the cluster Kubernetes version. For example, if you have selected the Kubernetes version 1.27, you should find something like ```1.27.3```.
 
-8. Then, in the following command, set the Cluster Autoscaler image tag as that version you have found in the previous step.
+7. Then, in the following command, set the Cluster Autoscaler image tag as that version you have found in the previous step.
 
 ```bash
 kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=registry.k8s.io/autoscaling/cluster-autoscaler:<YOUR-VERSION-HERE>

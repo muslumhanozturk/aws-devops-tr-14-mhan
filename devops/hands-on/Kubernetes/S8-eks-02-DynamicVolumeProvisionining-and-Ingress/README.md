@@ -16,7 +16,7 @@ At the end of the this hands-on training, students will be able to;
 
 ## Outline
 
-- Part 1 - Installing kubectl and eksctl on Amazon Linux 2
+- Part 1 - Installing kubectl and eksctl on Amazon Linux 2023
 
 - Part 2 - Creating the Kubernetes Cluster on EKS
 
@@ -38,20 +38,20 @@ For information on installing or upgrading eksctl, see [Installing or upgrading 
 
 ### Install kubectl
 
-- Launch an AWS EC2 instance of Amazon Linux 2 AMI with security group allowing SSH.
+- Launch an AWS EC2 instance of Amazon Linux 2023 AMI with security group allowing SSH.
 
 - Connect to the instance with SSH.
 
 - Update the installed packages and package cache on your instance.
 
 ```bash
-sudo yum update -y
+sudo dnf update -y
 ```
 
 - Download the Amazon EKS vended kubectl binary.
 
 ```bash
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.7/2023-03-17/bin/linux/amd64/kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.5/2023-09-14/bin/linux/amd64/kubectl
 ```
 
 - Apply execute permissions to the binary.
@@ -83,7 +83,13 @@ kubectl version --short --client
 - Download and extract the latest release of eksctl with the following command.
 
 ```bash
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+```
+
+- Move and extract the binary to /tmp folder.
+
+```bash
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 ```
 
 - Move the extracted binary to /usr/local/bin.
@@ -186,7 +192,7 @@ eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cw-cluster
 eksctl create iamserviceaccount \
   --name ebs-csi-controller-sa \
   --namespace kube-system \
-  --cluster cw-cluster \
+  --cluster oliver \
   --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --approve \
   --role-only \
@@ -388,7 +394,7 @@ ingress-yaml-files
 - Alternatively you can clone some part of your repository as show below:
 
 ```shell
-sudo yum install git -y
+sudo dnf install git -y
 mkdir repo && cd repo
 git init
 git remote add origin <origin-url>
