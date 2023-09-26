@@ -192,7 +192,7 @@ eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cw-cluster
 eksctl create iamserviceaccount \
   --name ebs-csi-controller-sa \
   --namespace kube-system \
-  --cluster oliver \
+  --cluster cw-cluster \
   --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
   --approve \
   --role-only \
