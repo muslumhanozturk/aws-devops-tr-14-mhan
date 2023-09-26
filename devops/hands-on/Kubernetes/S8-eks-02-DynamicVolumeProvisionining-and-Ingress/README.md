@@ -89,7 +89,7 @@ curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$
 - Move and extract the binary to /tmp folder.
 
 ```bash
-tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+tar -xzf eksctl_$(uname -s)_amd64.tar.gz -C /tmp && rm eksctl_$(uname -s)_amd64.tar.gz
 ```
 
 - Move the extracted binary to /usr/local/bin.
@@ -215,6 +215,13 @@ eksctl create addon --name aws-ebs-csi-driver --cluster cw-cluster --service-acc
 kubectl get sc
 
 kubectl describe sc/gp2
+```
+
+- Create a `storage-class` directory and change directory.
+
+
+```bash
+mkdir storage-class && cd storage-class
 ```
 
 - Create a StorageClass with the following settings.
