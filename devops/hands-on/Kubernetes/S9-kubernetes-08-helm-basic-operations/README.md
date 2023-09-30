@@ -667,7 +667,7 @@ helm uninstall from-local-repo
 helm repo remove mylocalrepo
 ```
 
-## Part 5 - Set up a Helm v3 chart repository in Github
+## Part 5 - Set up a Helm v3 chart repository in Github (Optional)
 
 - Create a GitHub repo and name it `mygithubrepo`.
 
@@ -693,7 +693,7 @@ git push -u origin main
 
 ```bash
 cd ..
-helm create demogitrepo
+helm create demogitrepo    kubernetes-project
 ```
 
 - Package the repo under the `mygithubrepo` folder.
@@ -713,7 +713,7 @@ helm repo index .
 
 ```bash
 git add .
-git commit -m "demogitrepo chart is added"
+git commit -m "kubernetes-project chart is added"
 git push
 ```
 

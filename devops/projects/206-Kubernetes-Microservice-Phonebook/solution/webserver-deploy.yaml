@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webserver-deploy
+  name: webserver-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver-deploy
+  template:
+    metadata:
+      labels:
+        app: webserver-deploy
+    spec:
+      containers:
+      - image: olivercw/webserver
+        name: webserver
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: server-config
+        - secretRef:
+            name: mysql-secret
+        # env:
+        # - name: MYSQL_PASSWORD
+        #   value: Clarusway_1
+        # - name: MYSQL_USER
+        #   value: Clarus
+        # - name: MYSQL_DATABASE
+        #   value: phonebook
+        # - name: MYSQL_DATABASE_HOST  
+        #   value: mysql
+        resources: {}

@@ -179,7 +179,7 @@ aws eks --region <us-east-1> update-kubeconfig --name <cluster_name>
 
 6. Then run the command on your terminal
 ```bash
-kubectl get svc   # nodeların 443 https portunu aç
+kubectl get svc
 ```
 You should see the output below
 ```bash
