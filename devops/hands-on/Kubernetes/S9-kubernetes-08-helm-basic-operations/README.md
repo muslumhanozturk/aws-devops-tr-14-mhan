@@ -693,7 +693,7 @@ git push -u origin main
 
 ```bash
 cd ..
-helm create demogitrepo    kubernetes-project
+helm create demogitrepo
 ```
 
 - Package the repo under the `mygithubrepo` folder.
@@ -713,7 +713,7 @@ helm repo index .
 
 ```bash
 git add .
-git commit -m "kubernetes-project chart is added"
+git commit -m "demogitrepo chart is added"
 git push
 ```
 

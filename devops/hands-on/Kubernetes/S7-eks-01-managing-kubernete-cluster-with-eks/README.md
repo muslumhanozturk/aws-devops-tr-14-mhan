@@ -128,7 +128,7 @@ aws eks list-clusters
 
         <i>Explain the necessity of using dedicated VPC for the cluster.</i>
 
-    - Select default VPC security or create one with SSH connection and https. 
+    - Select default VPC security group (it must have ssh and https rules) or create one with SSH connection and https. 
 
         <i>Explain the necessity of using dedicated Securitygroup for the cluster.</i>
 
