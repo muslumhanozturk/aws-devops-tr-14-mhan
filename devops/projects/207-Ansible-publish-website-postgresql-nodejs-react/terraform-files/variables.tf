@@ -4,7 +4,10 @@ variable "region" {}
 variable "mykey" {}
 variable "tags" {}
 variable "myami" {
-  description = "3 amazon linux 2023 ami and 1 ubuntu 22.04 ami"
+  description = "redhat enterprise linux 8 ami"
 }
 variable "instancetype" {}
+variable "controlinstancetype" {}
 variable "num" {}
+variable "mysecgr" {}
+variable "user" {}

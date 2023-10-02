@@ -1,5 +1,5 @@
 //This Terraform Template creates 4 Ansible Machines on EC2 Instances
-//Ansible Machines will run on Amazon Linux 2 and Ubuntu 20.04 with custom security group
+//Ansible Machines will run on Amazon Linux 2023 and Ubuntu 22.04 with custom security group
 //allowing SSH (22) and HTTP (80) connections from anywhere.
 //User needs to select appropriate variables from "tfvars" file when launching the instance.
 
@@ -7,7 +7,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -90,9 +90,7 @@ resource "null_resource" "config" {
     inline = [
       "sudo hostnamectl set-hostname Control-Node",
       "sudo dnf update -y",
-      "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
-      "python3 get-pip.py --user",
-      "pip3 install --user ansible",
+      "sudo dnf install ansible -y",
       "echo [webservers] >> inventory.txt",
       "echo node1 ansible_host=${aws_instance.nodes[1].private_ip} ansible_ssh_private_key_file=~/${var.mykey}.pem ansible_user=ec2-user >> inventory.txt",
       "echo node2 ansible_host=${aws_instance.nodes[2].private_ip} ansible_ssh_private_key_file=~/${var.mykey}.pem ansible_user=ec2-user >> inventory.txt",
