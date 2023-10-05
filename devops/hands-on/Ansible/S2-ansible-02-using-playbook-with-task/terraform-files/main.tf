@@ -36,6 +36,7 @@ resource "aws_instance" "nodes" {
 data "aws_vpc" "default" {
   default = true
 }
+
 resource "aws_security_group" "tf-sec-gr" {
   name = "ansible-lesson-sec-gr-${local.user}"
   vpc_id = data.aws_vpc.default.id

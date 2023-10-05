@@ -29,9 +29,7 @@ At the end of this hands-on training, students will be able to;
 
 ```bash
 sudo dnf update -y
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py --user
-pip3 install --user ansible
+sudo dnf install ansible -y
 ```
 
 - Check Ansible's installation with the command below.

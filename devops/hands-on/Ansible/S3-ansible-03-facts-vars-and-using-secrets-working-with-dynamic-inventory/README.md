@@ -24,7 +24,7 @@ At the end of this hands-on training, students will be able to;
 ## Part 1 - Install Ansible
 
 
-- Spin-up 3 Amazon Linux 2 instances and name them as:
+- Spin-up 3 Amazon Linux 2023 instances and name them as:
     1. control node
     2. node1 ----> (SSH PORT 22, HTTP PORT 80)
     3. node2 ----> (SSH PORT 22, HTTP PORT 80)
@@ -34,9 +34,7 @@ At the end of this hands-on training, students will be able to;
 
 ```bash
 sudo dnf update -y
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py --user
-pip3 install --user ansible
+sudo dnf install ansible -y
 ```
 
 ### Confirm Installation
@@ -52,7 +50,7 @@ ansible --version
 - Connect to the control node and create an inventory.
 
 ```bash
-vim inventory.txt
+vim inventory.ini
 ```
 ```bash
 [webservers]
@@ -71,7 +69,7 @@ ansible_ssh_private_key_file=/home/ec2-user/<pem file>
 vim ansible.cfg
 [defaults]
 host_key_checking = False
-inventory = inventory.txt
+inventory = inventory.ini
 deprecation_warnings=False
 interpreter_python=auto_silent
 ``` 
@@ -92,7 +90,104 @@ chmod 400 <pem file>
 ansible all -m ping -o
 ```
 
-## Part 2 - Ansible Facts
+## Part 2 - Ansible Variables and Facts
+
+- While automation exists to make it easier to make things repeatable, all of your systems are likely not exactly alike.
+
+- On some systems you may want to set some behavior or configuration that is slightly different from others.
+
+- You might have some templates for configuration files that are mostly the same, but slightly different based on those variables.
+
+- Variables in Ansible are how we deal with differences between systems.
+
+- Create a playbook named `myplaybook.yml` as below.
+
+```yaml
+- name: Copy ip address to node1
+  hosts: node1
+  tasks:
+   - name: Copy ip address to the nodes
+     ansible.builtin.copy:
+       content: 'Private ip address of this node is 172.31.88.207'
+       dest: /home/ec2-user/myfile
+      
+- name: Copy ip address to node2
+  hosts: node2
+  tasks:
+   - name: Copy ip address to the nodes
+     ansible.builtin.copy:
+       content: 'Private ip address of this node is 172.31.81.197'
+       dest: /home/ec2-user/myfile
+```
+
+- Execute the playbook.
+
+```bash
+ansible-playbook myplaybook.yml
+```
+
+- Notice that in the playbook we use same content for each of node but ip address. This time we get the ip address value from a variable. Update the myplaybook.yaml as follow.
+
+```yaml
+- name: Copy ip address to node1
+  hosts: node1
+  vars:
+    ip_address: 172.31.88.207
+  tasks:
+   - name: Copy ip address to the nodes
+     ansible.builtin.copy:
+       content: 'Private ip address of this node is {{ ip_address }}'
+       dest: /home/ec2-user/myfile
+      
+- name: Copy ip address to node2
+  hosts: node2
+  vars:
+    ip_address: 172.31.81.197
+  tasks:
+   - name: Copy ip address to the nodes
+     ansible.builtin.copy:
+       content: 'Private ip address of this node is {{ ip_address }}'
+       dest: /home/ec2-user/myfile
+```
+
+- Execute the playbook and see that nothing changed.
+
+```bash
+ansible-playbook myplaybook.yml
+```
+
+### Ansible Debug Module
+
+- This module prints statements during execution and can be useful for debugging variables or expressions without necessarily halting the playbook.
+
+Update the myplaybook.yaml as follow.
+
+```yaml
+- name: Copy ip address to node1
+  hosts: node1
+  vars:
+    ip_address: 172.31.88.207
+  tasks:
+   - name: Copy ip address to the nodes
+     ansible.builtin.copy:
+       content: 'Private ip address of this node is {{ ip_address }}'
+       dest: /home/ec2-user/myfile
+      
+   - name: using debug module
+     ansible.builtin.debug:
+       var: ip_address
+
+```
+
+- Execute the playbook and check the output.
+
+```bash
+ansible-playbook myplaybook.yml
+```
+
+### Ansible facts
+
+- Ansible facts are data related to your remote systems, including operating systems, IP addresses, attached filesystems, and more. You can access this data in the ansible_facts variable.
 
 - Gathering Facts:
 
@@ -319,13 +414,13 @@ mkdir dynamic-inventory
 cd dynamic-inventory
 ```
 
-- Create a file named ```inventory.txt``` with the command below.
+- Create a file named ```inventory.ini``` with the command below.
 
 ```bash
-nano inventory.txt
+nano inventory.ini
 ```
 
-- Paste the content below into the inventory.txt file.
+- Paste the content below into the inventory.ini file.
 
 - Along with the hands-on, public or private IPs can be used.
 
@@ -343,7 +438,7 @@ nano ansible.cfg
 ```cfg
 [defaults]
 host_key_checking = False
-inventory=/home/ec2-user/dynamic-inventory/inventory.txt
+inventory=/home/ec2-user/dynamic-inventory/inventory.ini
 interpreter_python=auto_silent
 private_key_file=~/<pem file>
 ```
@@ -415,7 +510,7 @@ ansible-inventory -i inventory_aws_ec2.yml --graph
   |  |--ec2-54-234-17-41.compute-1.amazonaws.com
   |--@ungrouped:
 ```
-- Change the inventory's value in ansible.cfg file to inventory.txt. 'inventory=/home/ec2-user/dynamic-inventory/inventory_aws_ec2.yml'
+- Change the inventory's value in ansible.cfg file to inventory.ini. 'inventory=/home/ec2-user/dynamic-inventory/inventory_aws_ec2.yml'
 
 
 - To make sure that all our hosts are reachable with dynamic inventory, we will run various ad-hoc commands that use the ping module.

@@ -1,5 +1,5 @@
 //This Terraform Template creates 3 Ansible Machines on EC2 Instances
-//Ansible Machines will run on Amazon Linux 2 with custom security group
+//Ansible Machines will run on Amazon Linux 2023 with custom security group
 //allowing SSH (22) and HTTP (80) connections from anywhere.
 //User needs to select appropriate variables form "tfvars" file when launching the instance.
 
@@ -7,7 +7,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
@@ -22,7 +22,6 @@ locals {
   user = "clarusway"
 }
 
-
 resource "aws_instance" "nodes" {
   ami = var.myami
   instance_type = var.instancetype
@@ -34,10 +33,15 @@ resource "aws_instance" "nodes" {
   }
 }
 
+data "aws_vpc" "default" {
+  default = true
+}
+
 resource "aws_security_group" "tf-sec-gr" {
-  name = "ansible-lesson3-sec-gr-${local.user}"
+  name = "ansible-lesson-sec-gr-${local.user}"
+  vpc_id = data.aws_vpc.default.id
   tags = {
-    Name = "ansible-session3-sec-gr-${local.user}"
+    Name = "ansible-session-sec-gr-${local.user}"
   }
 
   ingress {
@@ -87,13 +91,11 @@ resource "null_resource" "config" {
     inline = [
       "sudo hostnamectl set-hostname Control-Node",
       "sudo dnf update -y",
-      "curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py",
-      "python3 get-pip.py --user",
-      "pip3 install --user ansible",
-      "echo [webservers] >> inventory.txt",
-      "echo node1 ansible_host=${aws_instance.nodes[1].private_ip} ansible_ssh_private_key_file=/home/ec2-user/${var.mykey}.pem ansible_user=ec2-user >> inventory.txt",
-      "echo [dbservers] >> inventory.txt",
-      "echo node2 ansible_host=${aws_instance.nodes[2].private_ip} ansible_ssh_private_key_file=/home/ec2-user/${var.mykey}.pem ansible_user=ec2-user >> inventory.txt",
+      "sudo dnf install ansible -y",
+      "echo [webservers] >> inventory.ini",
+      "echo node1 ansible_host=${aws_instance.nodes[1].private_ip} ansible_ssh_private_key_file=/home/ec2-user/${var.mykey}.pem ansible_user=ec2-user >> inventory.ini",
+      "echo [dbservers] >> inventory.ini",
+      "echo node2 ansible_host=${aws_instance.nodes[2].private_ip} ansible_ssh_private_key_file=/home/ec2-user/${var.mykey}.pem ansible_user=ec2-user >> inventory.ini",
       "chmod 400 ${var.mykey}.pem"
     ]
   }
