@@ -14,7 +14,7 @@ At the end of this hands-on training, students will be able to;
 
 ## Outline
 
-- Part 1 - Build the Infrastructure (3 EC2 Instances with Ubuntu 20.04 AMI)
+- Part 1 - Build the Infrastructure (3 EC2 Instances with Ubuntu 22.04 AMI)
 
 - Part 2 - Install Ansible on the Controller Node
 
@@ -28,7 +28,7 @@ At the end of this hands-on training, students will be able to;
 
 ## Part 1 - Build the Infrastructure
 
-- Get to the AWS Console and spin-up 3 EC2 Instances with ```Ubuntu 20.04``` AMI.
+- Get to the AWS Console and spin-up 3 EC2 Instances with ```Ubuntu 22.04``` AMI.
 
 - Configure the security groups as shown below:
 
@@ -52,7 +52,7 @@ At the end of this hands-on training, students will be able to;
 $ ansible --version
 ```
 
-- Show and exlain the files (`ansible.cfg`, `inventory.txt`) that created by terraform.
+- Show and exlain the files (`ansible.cfg`, `inventory.ini`) that created by terraform.
 
 ## Part 3 - Pinging the Target Nodes
 
