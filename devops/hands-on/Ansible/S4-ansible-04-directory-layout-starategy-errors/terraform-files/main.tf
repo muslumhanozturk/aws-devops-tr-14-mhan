@@ -124,7 +124,7 @@ output "controlnodeip" {
 # uncomment the comment lines and run the terraform file with the instruction of the instructor.
 
 # resource "aws_instance" "nodes3" {
-#   ami = "ami-08a52ddb321b32a8c"
+#   ami = "ami-067d1e60475437da2"
 #   instance_type = var.worker-node-type
 #   key_name = var.mykey
 #   vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]

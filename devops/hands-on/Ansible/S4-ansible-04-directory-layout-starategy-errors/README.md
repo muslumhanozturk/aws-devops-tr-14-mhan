@@ -183,7 +183,7 @@ ansible-playbook ping-playbook.yml
 ansible-playbook db_config.yml
 ```
 
-- Open up a new Terminal or Window and connect to the ```db_server``` instance and check if ```MariaDB``` is installed, started, and enabled.
+- Open up a new Terminal or Window and connect to the ```db_server``` instance and check if ```MYSQL``` is installed, started, and enabled.
 
 ```bash
 mysql --version
@@ -443,7 +443,7 @@ ansible-playbook playbook.yml
 
 ## Part-6 Error Handling and Controlling playbook execution: strategies
 
-- Now, we create one more ec2 instance and add it to our inventory. (``amazon linux 2, t2.micro``)
+- Now, we create one more ec2 instance and add it to our inventory. (``amazon linux 2023, t2.micro``)
 
 - Create a playbook (``playbook2.yml``) to learn ansible playbook strategies and error handling.. 
 
@@ -481,7 +481,7 @@ ansible-playbook playbook.yml
 ansible-playbook playbook2.yml
 ```
 
-- In the playbook we will take an ``error``, becouse we can not use `àpt` module in node3 (amazon linux 2). So, the playbook can not complete for node3. If you want to stop whole playbook when take an error in a target node, you can use `any_errors_fatal` parameter. Now, add the parameter `any_errors_fatal: true` after the `hosts` parameter and run the playbook again. 
+- In the playbook we will take an ``error``, becouse we can not use `apt` module in node3 (amazon linux 2). So, the playbook can not complete for node3. If you want to stop whole playbook when take an error in a target node, you can use `any_errors_fatal` parameter. Now, add the parameter `any_errors_fatal: true` after the `hosts` parameter and run the playbook again. 
 
 ```bash
 ansible-playbook playbook2.yml
