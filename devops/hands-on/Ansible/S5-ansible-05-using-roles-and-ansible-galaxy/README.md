@@ -160,7 +160,7 @@ ansible-playbook role1.yml
 
 ## Part 3 - Using Ansible Roles from Ansible Galaxy
 
-- Go to Ansible Galaxy web site (`www.galaxy.ansible.com`)
+- Go to Ansible Galaxy web site (``https://galaxy.ansible.com/``)
 
 - Click the Search option
 
@@ -336,14 +336,14 @@ sudo dnf install git
 ```yml
 - src: git+https://github.com/geerlingguy/ansible-role-docker
   name: docker
-  version: 2.9.0
+  version: 7.0.1
 
 - src: git+https://github.com/geerlingguy/ansible-role-ntp
-  version: 2.1.0
+  version: 2.3.3
   name: ansible-role-ntp
 
 - src: git+https://github.com/UnderGreen/ansible-prometheus-node-exporter
-  version: master
+  version: 1.5.0
 ```
 
 * We will use prometheus at next session to monitor our intances, and NTP is Network Time Protocol. [For more information](https://en.wikipedia.org/wiki/Network_Time_Protocol)
