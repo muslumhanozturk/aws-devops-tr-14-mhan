@@ -1,6 +1,6 @@
 //aws_access_key = ""
 //aws_secret_key = ""
-myami = "ami-016eb5d644c333ccb"
+myami = "ami-026ebd4cfe2c043b2"
 mykey = "clarusway"
 tags = ["postgresql", "nodejs", "react"]
 instancetype = "t2.micro"

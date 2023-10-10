@@ -1,5 +1,5 @@
 //This Terraform Template creates 4 Ansible Machines on EC2 Instances
-//Ansible Machines will run on Red Hat Enterprise Linux 8 with custom security group
+//Ansible Machines will run on Red Hat Enterprise Linux 9 with custom security group
 //allowing SSH (22), 5000, 3000 and 5432 connections from anywhere.
 //User needs to select appropriate variables form "tfvars" file when launching the instance.
 
@@ -7,7 +7,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
