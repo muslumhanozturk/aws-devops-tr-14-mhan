@@ -38,10 +38,10 @@ ssh -i .ssh/call-training.pem ec2-user@ec2-3-133-106-98.us-east-2.compute.amazon
 mkdir docker-lesson && cd docker-lesson
 ```
 
-- Create `app.java` file as below.
+- Create `App.java` file as below.
 
 ```java
-public class app {
+public class App {
     public static void main(String[] args) {
         System.out.println("Welcome");
     }
@@ -54,12 +54,12 @@ public class app {
 FROM openjdk:11-jdk-slim AS builder   
 COPY . /app
 WORKDIR /app
-RUN javac app.java
+RUN javac App.java
 
 FROM openjdk:11-jre-slim
 WORKDIR /myapp
 COPY --from=builder /app .
-CMD ["java", "app"]
+CMD ["java", "App"]
 ```
 
 - Build and run the image.

@@ -6,7 +6,7 @@ Purpose of the this hands-on training is to teach the students how to use Maven 
 
 At the end of the this hands-on training, students will be able to;
 
-- install Maven and Java-11 on Amazon Linux 2 EC2 instance
+- install Maven and Java-11 on Amazon Linux EC2 instance
 
 - explain various build phases of a Java Application
 
@@ -15,14 +15,14 @@ At the end of the this hands-on training, students will be able to;
 
 ## Outline
 
-- Part 1 - Launch Amazon Linux 2 EC2 Instance with Cloudformation Template
+- Part 1 - Launch Amazon Linux EC2 Instance with Cloudformation Template
 
 - Part 2 - Generate a Java application using Maven's Archetype Plugin
 
 - Part 3 - Run Maven Commands
 
 
-## Part 1 - Launch Amazon Linux 2 EC2 Instance and Connect with SSH
+## Part 1 - Launch Amazon Linux EC2 Instance and Connect with SSH
 
 - Launch an EC2 instance using ```maven-java-template.yml``` file located in this folder.
     - This template will create an EC2 instance with Java-11 and Maven.

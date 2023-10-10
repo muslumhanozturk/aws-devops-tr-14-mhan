@@ -1,5 +1,5 @@
 //This Terraform Template creates an EC2 Instance with Java-11 and Maven.
-//Amazon Linux 2 (ami-0947d2ba12ee1ff75) will be used as an EC2 Instance with
+//Amazon Linux 2023 will be used as an EC2 Instance with
 //custom security group allowing SSH connections from anywhere on port 22.
 
 provider "aws" {
