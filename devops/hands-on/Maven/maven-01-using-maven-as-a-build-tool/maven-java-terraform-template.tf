@@ -47,8 +47,8 @@ resource "aws_instance" "maven-ec2" {
 
   user_data = <<-EOF
                 #! /bin/bash
-                dnf update -y
-                dnf install java-11-amazon-corretto -y
+                yum update -y
+                yum install java-11-amazon-corretto-devel -y
                 cd /home/ec2-user/
                 wget https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
                 tar -zxvf $(ls | grep apache-maven-*-bin.tar.gz)
