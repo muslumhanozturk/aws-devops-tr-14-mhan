@@ -252,10 +252,4 @@ sudo systemctl enable httpd
 sudo cp -a site/. /var/www/html
 ```
 
-
-
-
-
-
-
-
+- Go to http://<public-node-ip> on browser to check project site.
