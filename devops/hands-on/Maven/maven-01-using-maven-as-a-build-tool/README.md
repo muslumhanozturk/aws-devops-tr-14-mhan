@@ -87,10 +87,6 @@ tree
 
 - Replace the content of the ```pom.xml``` file with the content of the pom.xml file in this repo.
 
-- Since we've install Java-11 on the EC2 machine, uncomment the ```properties``` tag of the new pom.xml file.
-
-- Explain that the ```maven.compiler.source``` property specifies the version of source code accepted and the ```maven.compiler.target``` generates class files compatible with the specified version of JVM.
-
 - Explain that ```dependencyManagement``` section in the pom file will import multiple dependencies with compatible versions.  
 
 
