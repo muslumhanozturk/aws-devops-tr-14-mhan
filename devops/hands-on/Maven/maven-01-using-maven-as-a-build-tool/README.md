@@ -211,21 +211,6 @@ mvn install
 
 >### mvn site
 
-- Add two more plugins to run the command ```mvn site```
-
-```xml
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-site-plugin</artifactId>
-    <version>3.7.1</version>
-</plugin>
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-project-info-reports-plugin</artifactId>
-    <version>3.0.0</version>
-</plugin>
-```
-
 - Run the command below.
 
 ```bash
@@ -249,3 +234,89 @@ sudo cp -a site/. /var/www/html
 ```
 
 - Go to http://<public-node-ip> on browser to check project site.
+
+
+## Multi-stage builds with maven (Optional)
+
+- Install docker
+
+```bash
+sudo yum update -y
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl status docker
+sudo usermod -a -G docker ec2-user
+newgrp docker
+```
+
+- Create a folder named `docker`.
+
+```
+mkdir docker && cd docker
+```
+
+- Create a maven project.
+
+```bash
+mvn archetype:generate -DgroupId=com.clarus.maven -DartifactId=myproject -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+```
+
+- Add the maven-assembly-plugin to the pom file to run application.
+
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <executions>
+          <execution>
+              <phase>package</phase>
+              <goals>
+                  <goal>single</goal>
+              </goals>
+              <configuration>
+                  <archive>
+                  <manifest>
+                      <mainClass>
+                          com.clarus.maven.App
+                      </mainClass>
+                  </manifest>
+                  </archive>
+                  <descriptorRefs>
+                      <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+              </configuration>
+          </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+
+- Create a multi-stage Dockerfile.
+
+```Dockerfile
+FROM maven:3.9.4-eclipse-temurin-8-alpine AS builder
+COPY /myproject /app
+WORKDIR /app
+RUN mvn clean package
+
+FROM openjdk:11-jre-slim
+COPY --from=builder /app/target/myproject-1.0-SNAPSHOT-jar-with-dependencies.jar /app/app.jar
+WORKDIR /app
+CMD ["java","-jar","app.jar"]
+```
+
+- Build the image.
+
+```bash
+docker build -t maven-project .
+```
+
+- Run the container.
+
+```
+docker run maven-project
+```
