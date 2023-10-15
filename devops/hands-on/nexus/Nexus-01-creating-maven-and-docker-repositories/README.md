@@ -36,7 +36,8 @@ At the end of this hands-on training, students will be able to;
 
 ## Part 1 : Start Nexus Repository and Create Credentials
 
-- Launch a t2.medium (Nexus needs 8 GB of RAM) EC2 instance using the Amazon Linux 2 AMI (ami-03c7d01cf4dedc891) with security group allowing `SSH (22), Nexus Port (8081), 8082 and 8083` connections.
+- Launch a t2.medium (Nexus needs 8 GB of RAM) EC2 instance using the Amazon Linux 2 AMI (ami-0bb4c991fa89d4b9b
+) with security group allowing `SSH (22), Nexus Port (8081), 8082 and 8083` connections.
 
 - Connect to your instance with SSH:
 
@@ -46,33 +47,32 @@ ssh -i .ssh/call-training.pem ec2-user@ec2-3-133-106-98.us-east-2.compute.amazon
 
 - Update the OS:
 
-```
+```bash
 sudo yum update -y
 ```
-
 
 - Install Java:
 Nexus and Maven is Java based application, so to run Nexus and Maven we have to install Java on the server.
 
-```
+```bash
 sudo yum install java-1.8.0-openjdk -y
 java -version
 ```
 
 - Download and install Maven:
 
-```
-sudo wget https://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-
-ls /etc/yum.repos.d/
-```
-
-```
-sudo sed -i s/\$releasever/7/g /etc/yum.repos.d/epel-apache-maven.repo
+```bash
+wget https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
+tar -zxvf $(ls | grep apache-maven-*-bin.tar.gz)
+rm -rf $(ls | grep apache-maven-*-bin.tar.gz)
 ```
 
-```
-sudo yum install apache-maven -y
+- Create an Environment Variable for Maven
+
+```bash
+echo "M2_HOME=/home/ec2-user/$(ls | grep apache-maven)" >> /home/ec2-user/.bashrc
+echo 'export PATH=$PATH:$M2_HOME/bin' >> /home/ec2-user/.bashrc
+bash
 mvn -version
 whereis mvn
 ```
@@ -110,7 +110,7 @@ ll
 - Tell nexus that the ec2-user is going to be running the service. Edit the nexus.rc file with this `run_as_user="ec2-user"` content:
 
 ```
-sudo nano /opt/nexus/bin/nexus.rc
+sudo vi /opt/nexus/bin/nexus.rc
 ```
 
 ```
@@ -126,51 +126,12 @@ echo $PATH
 nexus start
 ```
 
-- Another way to run nexus as a service.
-
-Run Nexus as Systemctl Service:
-
-- First, we have to add Nexus service to systemctl. Create a new file named `nexus.service` in the following directory:
-
-```
-sudo nano /etc/systemd/system/nexus.service
-```
-
-- Add this content to the nexus.service file:
-
-```
-[Unit]
-Description=nexus service
-After=network.target
-
-[Service]
-Type=forking
-LimitNOFILE=65536
-User=ec2-user
-Group=ec2-user
-ExecStart=/opt/nexus/bin/nexus start
-ExecStop=/opt/nexus/bin/nexus stop
-User=ec2-user
-Restart=on-abort
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Finally, enable nexus and start the service: 
-```
-sudo systemctl daemon-reload
-sudo systemctl enable nexus.service
-sudo systemctl start nexus.service
-sudo systemctl status nexus.service
-```
-
 - Open your browser to load the repository manager: `http://<AWS public dns>:8081`
 
 - To Retrieve the temporary password from `admin.password` file.
 
 ```
-more /opt/sonatype-work/nexus3/admin.password
+cat /opt/sonatype-work/nexus3/admin.password
 ```
 
 - Open Nexus service from the browser and click `Sing in` upper right of the page. A box will pop up.
@@ -196,7 +157,7 @@ mkdir nexus-hands-on && cd nexus-hands-on
 - Create a pom.xml in the nexus-hands-on directory: 
 
 ```
-nano pom.xml
+vi pom.xml
 ```
 
 - Open the POM file with a text editor in your terminal and add the following snippet.
@@ -236,7 +197,7 @@ nano pom.xml
 ```
 mvn
 curl http://169.254.169.254/latest/meta-data/public-ipv4
-nano /home/ec2-user/.m2/settings.xml
+vi /home/ec2-user/.m2/settings.xml
 ```
 52.90.127.112
 - Your settings.xml file should look like this (Don't forget to change the URL of your repository and the password): 3.89.163.211
@@ -316,7 +277,7 @@ cd target && ls
 - Open your settings.xml and change the URL of your repository `maven-proxy-hands-on` to `maven-public`.
 
 ```
-nano /home/ec2-user/.m2/settings.xml
+vi /home/ec2-user/.m2/settings.xml
 ```
 
 ```
@@ -370,7 +331,7 @@ nano /home/ec2-user/.m2/settings.xml
 
 ```
 curl http://169.254.169.254/latest/meta-data/public-ipv4
-nano /home/ec2-user/nexus-hands-on/pom.xml
+vi /home/ec2-user/nexus-hands-on/pom.xml
 ```
 
 ```
@@ -399,7 +360,7 @@ cd target && ls
 - Open the POM and remove the -SNAPSHOT tag from the version element.
 
 ```
-nano /home/ec2-user/nexus-hands-on/pom.xml
+vi /home/ec2-user/nexus-hands-on/pom.xml
 ```
 
 Run the releases build: 
@@ -431,7 +392,7 @@ mvn clean deploy
 - Modify the mirror configuration in your settings.xml to point to your group. So the "<url>" tag should have `http://<AWS public DNS>:8081/repository/maven-all` inside it.
 
 ```
-nano /home/ec2-user/.m2/settings.xml
+vi /home/ec2-user/.m2/settings.xml
 ```
 
 - So your settings.xml should look like this: 
