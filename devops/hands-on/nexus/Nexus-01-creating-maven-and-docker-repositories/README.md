@@ -79,13 +79,13 @@ whereis mvn
 
 - Download and install Nexus.
 
-```
+```bash
 cd /opt
 sudo wget -O nexus.tar.gz https://download.sonatype.com/nexus/3/latest-unix.tar.gz
 ls
 ```
 
-```
+```bash
 sudo tar xvzf nexus.tar.gz
 ls
 sudo rm nexus.tar.gz
@@ -93,14 +93,15 @@ ls
 ```
 
 Rename  nexus-3* directory for convenience:
-```
+
+```bash
 sudo mv nexus-3* nexus
 ls
 ```
 
 - Give the ownership of the directories related to Nexus to the ec2-user:
 
-```
+```bash
 ll
 sudo chown -R ec2-user:ec2-user /opt/nexus
 sudo chown -R ec2-user:ec2-user /opt/sonatype-work
@@ -109,20 +110,20 @@ ll
 
 - Tell nexus that the ec2-user is going to be running the service. Edit the nexus.rc file with this `run_as_user="ec2-user"` content:
 
-```
+```bash
 sudo vi /opt/nexus/bin/nexus.rc
 ```
 
-```
+```bash
 cd /opt/nexus/bin
 ls
 ```
 
 - Add the path of nexus binary to the PATH variable and run nexus.
 
-```
-export PATH=$PATH:/opt/nexus/bin
-echo $PATH
+```bash
+echo 'export PATH=$PATH:/opt/nexus/bin' >> /home/ec2-user/.bashrc
+bash
 nexus start
 ```
 
@@ -130,7 +131,7 @@ nexus start
 
 - To Retrieve the temporary password from `admin.password` file.
 
-```
+```bash
 cat /opt/sonatype-work/nexus3/admin.password
 ```
 
@@ -149,20 +150,20 @@ Write `admin` for Username and paste the string which you copied from admin.pass
 
 - Create a project folder, name it `nexus-hands-on`, and change that directory.
 
-```
+```bash
 cd
 mkdir nexus-hands-on && cd nexus-hands-on
 ```
 
 - Create a pom.xml in the nexus-hands-on directory: 
 
-```
+```bash
 vi pom.xml
 ```
 
 - Open the POM file with a text editor in your terminal and add the following snippet.
 
-```
+```xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example</groupId>
@@ -194,15 +195,16 @@ vi pom.xml
 
 - Nexus searches for settings.xml in the `/home/ec2-user/.m2` directory. .m2 directory is created after running the first mvn command.
 
-```
+```bash
 mvn
+# Get the public ip of instance
 curl http://169.254.169.254/latest/meta-data/public-ipv4
 vi /home/ec2-user/.m2/settings.xml
 ```
-52.90.127.112
-- Your settings.xml file should look like this (Don't forget to change the URL of your repository and the password): 3.89.163.211
 
-```
+- Your settings.xml file should look like this (Don't forget to change the URL of your repository and the password).
+
+```xml
 <settings>
   <mirrors>
     <mirror>
@@ -253,7 +255,7 @@ vi /home/ec2-user/.m2/settings.xml
 
 - Run the build with the command `mvn package`. Your build is ready when you see a BUILD SUCCESS message.
 
-```
+```bash
 pwd && ls
 mvn package
 ls
@@ -276,11 +278,11 @@ cd target && ls
 
 - Open your settings.xml and change the URL of your repository `maven-proxy-hands-on` to `maven-public`.
 
-```
+```bash
 vi /home/ec2-user/.m2/settings.xml
 ```
 
-```
+```xml
 <settings>
   <mirrors>
     <mirror>
@@ -329,12 +331,13 @@ vi /home/ec2-user/.m2/settings.xml
 
 - Add the distributionManagement element given below to your pom.xml file after the `</dependencies>` line. Include the endpoints to your maven-releases and maven-snapshots repos. Change localhost >>>> Public ip of your server.
 
-```
+```bash
+# Get the public ip of instance
 curl http://169.254.169.254/latest/meta-data/public-ipv4
 vi /home/ec2-user/nexus-hands-on/pom.xml
 ```
 
-```
+```xml
   <distributionManagement>
     <repository>
       <id>nexus</id>
@@ -349,7 +352,7 @@ vi /home/ec2-user/nexus-hands-on/pom.xml
   </distributionManagement>
 ```
 
-``` 
+```bash
 cd /home/ec2-user/nexus-hands-on
 mvn clean deploy
 cd target && ls
@@ -359,13 +362,13 @@ cd target && ls
 
 - Open the POM and remove the -SNAPSHOT tag from the version element.
 
-```
+```bash
 vi /home/ec2-user/nexus-hands-on/pom.xml
 ```
 
 Run the releases build: 
 
-```
+```bash
 mvn clean deploy
 ```
 
@@ -391,13 +394,13 @@ mvn clean deploy
 
 - Modify the mirror configuration in your settings.xml to point to your group. So the "<url>" tag should have `http://<AWS public DNS>:8081/repository/maven-all` inside it.
 
-```
+```bash
 vi /home/ec2-user/.m2/settings.xml
 ```
 
 - So your settings.xml should look like this: 
 
-```
+```xml
 <settings>
   <mirrors>
     <mirror>
@@ -446,7 +449,7 @@ vi /home/ec2-user/.m2/settings.xml
 
 - Download components directly to your repository group.
 
-```
+```bash
 cd /home/ec2-user/nexus-hands-on
 mvn install
 ```
@@ -455,7 +458,7 @@ mvn install
 
 - Go inside the .m2/repository/ 
 
-```
+```bash
 cd /home/ec2-user/.m2/repository && ls
 ```
 
@@ -513,30 +516,30 @@ newgrp docker
 docker version
 
 Client:
- Version:           20.10.17
+ Version:           20.10.23
  API version:       1.41
- Go version:        go1.18.6
- Git commit:        100c701
- Built:             Wed Sep 28 23:10:17 2022
+ Go version:        go1.18.9
+ Git commit:        7155243
+ Built:             Tue Apr 11 22:56:36 2023
  OS/Arch:           linux/amd64
  Context:           default
  Experimental:      true
 
 Server:
  Engine:
-  Version:          20.10.17
+  Version:          20.10.23
   API version:      1.41 (minimum version 1.12)
-  Go version:       go1.18.6
-  Git commit:       a89b842
-  Built:            Wed Sep 28 23:10:55 2022
+  Go version:       go1.18.9
+  Git commit:       6051f14
+  Built:            Tue Apr 11 22:57:17 2023
   OS/Arch:          linux/amd64
   Experimental:     false
  containerd:
-  Version:          1.6.6
-  GitCommit:        10c12954828e7c7c9b6e0ea9b0c02b01407d3ae1
+  Version:          1.6.19
+  GitCommit:        1e1ea6e986c6c86565bc33d52e34b81b3e2bc71f
  runc:
-  Version:          1.1.3
-  GitCommit:        1e7bb5b773162b57333d57f612fd72e3f8612d94
+  Version:          1.1.7
+  GitCommit:        f19387a6bec4944c770f7668ab51c4348d9c2f38
  docker-init:
   Version:          0.19.0
   GitCommit:        de40ad0
@@ -555,28 +558,28 @@ docker info
 ### For the blob storage
 
 - Click the config (gear) icon.
-- Navigate to 'Blob Stores'.
-- Create a new Blob Store of type File.
-- Name it as docker-hub.
-- Click `Create Blob Store`.
+- Navigate to `Blob Stores`.
+- Create a new Blob Store of type `File`.
+- Name it as `docker-hub`.
+- Click `Save`.
 
 ### For the Security Realm
 
 Click Security > Realms
-Add the 'Docker Bearer Token Realm'
-Click 'Save'
+Add the `Docker Bearer Token Realm`
+Click `Save`
 
 ### For the repo
 
-- Click 'Repositories'
-- Click 'Create Repository' and select 'docker (proxy)'
+- Click `Repositories`
+- Click `Create Repository` and select `docker (proxy)`
 - Give it some name (docker-hub)
-- Check 'HTTP' and give it a valid port (8082)
-- Check 'Allow anonymous docker pull'
+- Check `HTTP` and give it a valid port (8082)
+- Check `Allow anonymous docker pull`
 - Under Proxy > Remote Storage, enter this url: https://registry-1.docker.io
-- Under Docker Index, select 'Use Docker Hub'
+- Under Docker Index, select `Use Docker Hub`
 - Under Storage > Blob Store, select the blob store you created earlier (docker-hub)
-- Click 'Create Repository'
+- Click `Create Repository`
 
 ### Docker Configuration
 
@@ -614,20 +617,20 @@ docker image ls
 ### For the blob storage
 
 - Click the config (gear) icon.
-- Navigate to 'Blob Stores'.
+- Navigate to `Blob Stores`.
 - Create a new Blob Store of type File.
 - Name it as `docker-private`.
-- Click 'Create Blob Store'.
+- Click `Save`.
 
 ### For the repo
 
-- Click 'Repositories'
-- Click 'Create Repository' and select 'docker (hosted)'
+- Click `Repositories`
+- Click `Create Repository` and select `docker (hosted)`
 - Give it some name (docker-private)
-- Check 'HTTP' and give it a valid port (8083)
+- Check `HTTP` and give it a valid port (8083)
 - Check `Enable Docker V1 API`
 - Under Storage > Blob Store, select the blob store you created earlier (docker-private)
-- Click 'Create Repository'
+- Click `Create Repository`
 
 ### Docker Configuration
 
@@ -660,6 +663,5 @@ docker push 54.173.219.86:8083/myng
 - Click `Browse` from the left-side menu.
 
 - Click `docker-private`. You’ll see the docker images.
-
 
 > Note: To use docker group repo, `Nexus Pro version` is required.
