@@ -16,7 +16,7 @@ At the end of this hands-on training, students will be able to;
 
 ## Part 1 - Setting up the Kubernetes Cluster
 
-- Launch a Kubernetes Cluster of Ubuntu 20.04 with two nodes (one master, one worker) using the [Cloudformation Template to Create Kubernetes Cluster](../kubernetes-02-basic-operations/cfn-template-to-create-k8s-cluster.yml). *Note: Once the master node is up and running, the worker node automatically joins the cluster.*
+- Launch a Kubernetes Cluster of Ubuntu 22.04 with two nodes (one master, one worker) using the [Cloudformation Template to Create Kubernetes Cluster](../kubernetes-02-basic-operations/cfn-template-to-create-k8s-cluster.yml). *Note: Once the master node is up and running, the worker node automatically joins the cluster.*
 
 >*Note: If you have a problem with the Kubernetes cluster, you can use this link for the lesson.*
 >https://killercoda.com/playgrounds
@@ -72,7 +72,7 @@ kubectl apply -f clarusshop-v1.yaml
 kubectl get deploy
 ```
 
-- We create a service. Create a `clarusshop-svc.	yaml` file with the following content.
+- We create a service. Create a `clarusshop-svc.yaml` file with the following content.
 
 ```yaml
 apiVersion: v1
@@ -143,7 +143,7 @@ kubectl get deploy
 
 - Visit `http://<public-node-ip>:<node-port>` and see that the service will be routed to the new version at a portion of approximately %20.
 
-- İncrease the replicas of `clarusshop-v2` deployment to 4. So the traffic balance will be 50-50.
+- Increase the replicas of `clarusshop-v2` deployment to 4. So the traffic balance will be 50-50.
 
 - At this level, we decide that the new version of the application is ready. And, we relay full traffic to the new version.
 

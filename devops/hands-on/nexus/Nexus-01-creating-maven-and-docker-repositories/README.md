@@ -36,8 +36,7 @@ At the end of this hands-on training, students will be able to;
 
 ## Part 1 : Start Nexus Repository and Create Credentials
 
-- Launch a t2.medium (Nexus needs 8 GB of RAM) EC2 instance using the Amazon Linux 2 AMI (ami-0bb4c991fa89d4b9b
-) with security group allowing `SSH (22), Nexus Port (8081), 8082 and 8083` connections.
+- Launch a t2.medium (Nexus needs 8 GB of RAM) EC2 instance using the Amazon Linux 2 AMI (ami-0bb4c991fa89d4b9b) with security group allowing `SSH (22), Nexus Port (8081), 8082 and 8083` connections.
 
 - Connect to your instance with SSH:
 
