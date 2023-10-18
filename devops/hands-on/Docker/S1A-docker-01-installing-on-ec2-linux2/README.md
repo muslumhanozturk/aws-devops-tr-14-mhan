@@ -33,13 +33,13 @@ ssh -i .ssh/call-training.pem ec2-user@ec2-3-133-106-98.us-east-2.compute.amazon
 - Update the installed packages and package cache on your instance.
 
 ```bash
-sudo yum update -y
+sudo dnf update -y
 ```
 
 - Install the most recent Docker Community Edition package.
 
 ```bash
-sudo yum install docker -y
+sudo dnf install docker -y
 ```
 
 - Start docker service.
@@ -208,7 +208,7 @@ Resources:
       UserData:
         Fn::Base64: |
           #! /bin/bash
-          yum update -y
+          dnf update -y
           amazon-linux-extras install docker -y
           systemctl start docker
           systemctl enable docker

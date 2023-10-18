@@ -45,16 +45,32 @@ At the end of the this hands-on training, students will be able to;
 ssh -i .ssh/call-training.pem ec2-user@ec2-3-133-106-98.us-east-2.compute.amazonaws.com
 ```
 
-- Update the installed packages and package cache on your instance.
+- Download the Jenkins repository configuration file and save it as /etc/yum.repos.d/jenkins.repo. This file is used by the package manager to know where to find Jenkins packages.
 
 ```bash
-sudo dnf update -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 ```
 
-- Install `Java 11 openjdk` Java Development Kit.
+- Imports the GPG key required to verify Jenkins packages. It ensures that the packages are from a trusted source.
 
 ```bash
-sudo dnf install java-11-amazon-corretto -y
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+```
+
+- Upgrade all the installed packages on your system to their latest versions.
+
+```bash
+sudo dnf upgrade
+```
+
+- Install two dependencies needed for Jenkins to run properly:
+
+> fontconfig: This is a library used for configuring and customizing font rendering.
+
+> java-17-amazon-corretto: This installs the Java 17-amazon-corretto, which is the Java runtime environment required by Jenkins.
+
+```bash
+sudo dnf install fontconfig java-17-amazon-corretto-devel
 ```
 
 - Check the java version.
@@ -63,34 +79,16 @@ sudo dnf install java-11-amazon-corretto -y
 java -version
 ```
 
-- Install Git
+- install the Jenkins.
 
 ```bash
-sudo dnf install git -y
+sudo dnf install jenkins
 ```
 
-- Add Jenkins repo to the `yum` repository.
+- Tell systemd (the system and service manager for Linux) to reload its configuration files. This is necessary after installing a new service like Jenkins.
 
 ```bash
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-```
-
-- Import a key file from Jenkins-CI to enable installation from the package.
-
-```bash
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-```
-
-- Upgrade the installed packages.
-
-```bash
-sudo dnf upgrade
-```
-
-- Install Jenkins.
-
-```bash
-sudo dnf install jenkins -y
+sudo systemctl daemon-reload
 ```
 
 - Enable Jenkins service so that Jenkins service can restart automatically after reboots.
@@ -126,6 +124,12 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 - Create first admin user.
 
 - Check the URL, then save and finish the installation.
+
+- Install Git
+
+```bash
+sudo dnf install git -y
+```
 
 ## Part 2 - Getting familiar with Jenkins Dashboard
 
