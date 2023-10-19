@@ -52,7 +52,7 @@ At the end of the this hands-on training, students will be able to;
 
 - Build Steps:
     Invoke top-level Maven targets:
-      - Maven Version: maven-3.9.2
+      - Maven Version: maven-3.9.5
       - Goals: clean package
   - POM: pom.xml
 

@@ -1,12 +1,12 @@
 //This Template creates a Docker machine on EC2 Instance.
-//Docker Machine will run on Amazon Linux 2023 (ami-0889a44b331db0194) EC2 Instance with
+//Docker Machine will run on Amazon Linux 2023 EC2 Instance with
 //custom security group allowing SSH connections from anywhere on port 22 and HTTP.
 
 terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = "~>4.0"
+      version = "~>5.0"
     }
   }
 }
@@ -18,11 +18,31 @@ provider "aws" {
 
 locals {
   user = "cw-devops"
-  pem_file = "clarusway"  # change here
+  pem_file = "clarus"
+}
+
+data "aws_ami" "al2023" {
+  most_recent      = true
+  owners           = ["amazon"]
+
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name = "name"
+    values = ["al2023-ami-2023*"]
+  }
 }
 
 resource "aws_instance" "ecs" {
-  ami = "ami-0889a44b331db0194"
+  ami = data.aws_ami.al2023.id
   instance_type = "t2.micro"
   key_name = local.pem_file
   vpc_security_group_ids = [aws_security_group.ecs-sec-gr.id]

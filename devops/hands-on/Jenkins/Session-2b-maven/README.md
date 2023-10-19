@@ -26,11 +26,11 @@ At the end of the this hands-on training, students will be able to;
 
 - Connect to the Jenkins Server 
   
-- Install the JDK for Amazon Corretto 11
+- Install the JDK for Amazon Corretto 17
   
 ```bash
-sudo yum update -y
-sudo yum install java-11-amazon-corretto-devel
+sudo dnf update -y
+sudo dnf install java-17-amazon-corretto-devel
 ```
 
 - Install Maven
@@ -39,7 +39,7 @@ sudo yum install java-11-amazon-corretto-devel
 sudo su
 cd /opt
 rm -rf maven
-wget https://dlcdn.apache.org/maven/maven-3/3.9.1/binaries/apache-maven-3.9.1-bin.tar.gz
+wget https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
 tar -zxvf $(ls | grep apache-maven-*-bin.tar.gz)
 rm -rf $(ls | grep apache-maven-*-bin.tar.gz)
 ln -s $(ls | grep apache-maven*) maven
@@ -51,7 +51,7 @@ source /etc/profile.d/maven.sh
 - Install Git
   
 ```bash
-sudo yum install git -y
+sudo dnf install git -y
 ```
 
 ## Part 2 - Maven Settings
@@ -61,7 +61,7 @@ sudo yum install git -y
 - Setting System Maven Path for default usage
   
 - Go to `Manage Jenkins`
-  - Select `Configure System`
+  - Select `System`
   - Find `Environment variables` part,
   - Click `Add`
     - for `Name`, enter `PATH+EXTRA` 
@@ -70,11 +70,11 @@ sudo yum install git -y
 
 - Setting a specific Maven Release in Jenkins for usage
   
-- Go to the `Global Tool Configuration`
+- Go to the `Tools` at `System Configuration`
 - To the bottom, `Maven` section
-  - Give a name such as `maven-3.9.1`
+  - Give a name such as `maven-3.9.5`
   - Select `install automatically`
-  - `Install from Apache` version `3.9.1`
+  - `Install from Apache` version `3.9.5`
 - Save
 
 ## Part 3 - Creating Package Application - Free Style Maven Job
@@ -101,7 +101,7 @@ sudo yum install git -y
 
 - For `Build`, select `Invoke top-level Maven targets`
 
-  - For `Maven Version`, select the pre-defined maven, `maven-3.8.7` 
+  - For `Maven Version`, select the pre-defined maven, `maven-3.9.5` 
   - For `Goals`, write `clean package`
   - POM: `pom.xml`
 
