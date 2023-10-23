@@ -85,29 +85,38 @@ sudo dnf install git -y
 
 - Select `Free Style Project`
 
-- For Description : `This Job is packaging Java-Tomcat-Sample Project and creates a war file.`
+```yaml
+- General:
+- Description : This Job is packaging Java-Tomcat-Sample Project and creates a war file.
 
-- At `General Tab`, select Discard old builds, `Strategy` is `Log Rotation`, and for `Days to keep builds` enter `5` and `Max # of builds to keep` enter `3`.
+- Discard old builds: 
+   Strategy:
+     Log Rotation:
+       Days to keep builds: 5 
+       Max#of builds to keep: 3
 
-- From `Source Code Management` part select `Git`
+- Source Code Management:
+    Git:
+      Repository URL: https://github.com/clarusway-aws-devops/java-tomcat-sample-main.git
 
-- Enter `https://github.com/clarusway-aws-devops/java-tomcat-sample-main.git` for `Repository URL`.
-
-- Go to the web browser and check the branch name of the git project `https://github.com/clarusway-aws-devops/java-tomcat-sample-main.git`. 
+    Branches to build: Go to the web browser and check the branch name of the git project `https://github.com/clarusway-aws-devops/java-tomcat-sample-main.git`.
 
 - It is public repo, no need for `Credentials`.
 
-- At `Build Environments` section, select `Delete workspace before build starts` and `Add timestamps to the Console Output` options.
+- Build Environments: 
+   - Delete workspace before build starts
+   - Add timestamps to the Console Output
 
-- For `Build`, select `Invoke top-level Maven targets`
+- Build Steps:
+    Invoke top-level Maven targets:
+      - Maven Version: maven-3.9.5
+      - Goals: clean package
+  - POM: pom.xml
 
-  - For `Maven Version`, select the pre-defined maven, `maven-3.9.5` 
-  - For `Goals`, write `clean package`
-  - POM: `pom.xml`
-
-- At `Post-build Actions` section,
-  - Select `Archive the artifacts`
-  - For `Files to archive`, write `**/*.war` 
+- Post-build Actions:
+    Archive the artifacts:
+      Files to archive: **/*.war 
+```
 
 - Finally `Save` the job.
 
@@ -207,24 +216,21 @@ http://ec2-54-144-151-76.compute-1.amazonaws.com:8080/github-webhook/
 
 - Enter `pipeline-with-jenkinsfile-and-webhook-for-maven-project` then select `Pipeline` and click `OK`.
 
-- Enter `Simple pipeline configured with Jenkinsfile and GitHub Webhook for Maven project` in the description field.
+```yaml
+- General:
+- Description : Simple pipeline configured with Jenkinsfile and GitHub Webhook for Maven project
 
-- Put a checkmark on `GitHub Project` under `General` section, enter URL of the project repository.
+- Build Triggers:
+    - GitHub hook trigger for GITScm polling
 
-```text
-https://github.com/<your_github_account_name>/jenkins-maven-project/
-```
-
-- Put a checkmark on `GitHub hook trigger for GITScm polling` under `Build Triggers` section.
-
-- Go to the `Pipeline` section, and select `Pipeline script from SCM` in the `Definition` field.
-
-- Select `Git` in the `SCM` field.
-
-- Enter URL of the project repository, and let others be default.
-
-```text
-https://github.com/<your_github_account_name>/jenkins-maven-project/
+- Pipeline:
+    Definition:
+        Pipeline script from SCM:
+            Git:
+                Repository URL:
+                    - https://github.com/<your_github_account_name>/jenkins-maven-project/
+                
+                Branches to build: It must be same branch name with your `jenkins-first-webhook-project` Github repository. If your repository's default branch name is "main", then change "master" to "main".
 ```
 
 - Click `apply` and `save`. Note that the script `Jenkinsfile` should be placed under root folder of repo.

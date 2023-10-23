@@ -133,7 +133,7 @@ cd /opt/tomcat/conf
 
 - Go to the `/opt/tomcat/webapps/host-manager/META-INF/` and edit file `context.xml`. Actually commenting out the tagged `CookieProcessor` and `Valve` parts.
 
-```bash
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -164,7 +164,7 @@ cd /opt/tomcat/conf
 
 - Go to the `/opt/tomcat/webapps/manager/META-INF/` and edit file `context.xml`. Actually commenting out the tagged `CookieProcessor` and `Valve` parts.
 
-```bash
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
@@ -220,7 +220,7 @@ sudo vi tomcat.service
 ```
 
 - Copy and paste this code in "tomcat.service" file.
-```
+```sh
 [Unit]
 Description=Apache Tomcat Web Application Container
 After=syslog.target network.target

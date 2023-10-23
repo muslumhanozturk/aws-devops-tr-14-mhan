@@ -58,21 +58,23 @@ git push
 
 - Enter `first-job-triggered` then select `free style project` and click `OK`.
 
-- Enter `My first job triggered from GitHub` in the description field.
+```yaml
+- General:
+- Description : My first job triggered from GitHub
 
-- Put a checkmark on `Git` under `Source Code Management` section, enter URL of the project repository, and let others be default.
+- Source Code Management:
+    Git:
+      Repository URL: https://github.com/<your-github-account-name>/jenkins-first-webhook-project/
 
-```text
-https://github.com/<your-github-account-name>/jenkins-first-webhook-project/
-```
+    Branches to build: It must be same branch name with your `jenkins-first-webhook-project` Github repository. If your repository's default branch name is "main", then change "master" to "main".
 
-- Put a checkmark on `GitHub hook trigger for GITScm polling` under `Build Triggers` section,
+- Build Triggers:
+    - GitHub hook trigger for GITScm polling
 
-- Check `Branch Specifier`. It must be same branch name with your `jenkins-first-webhook-project` Github repository. If your repository's default branch name is "main", then change "master" to "main".
-
-- Go to `Build` section and choose "Execute Shell Command" step from `Add build step` dropdown menu.
-
-- Write down `python3 hello-world.py` to execute shell command, in textarea shown.
+- Build Steps:
+    Execute shell:
+        python3 hello-world.py
+```   
 
 - Click `apply` and `save`.
 
@@ -108,8 +110,6 @@ git push
 
 - Go back to the project page and explain the GitHub Hook log.
 
-
-
 ## Part 2 - Integrating Jenkins Pipeline with GitHub Webhook
 
 - Go to your Github ``jenkinsfile-pipeline-project`` repository page and click on `Settings`.
@@ -126,24 +126,21 @@ http://ec2-54-144-151-76.compute-1.amazonaws.com:8080/github-webhook/
 
 - Enter `pipeline-with-jenkinsfile-and-webhook` then select `Pipeline` and click `OK`.
 
-- Enter `Simple pipeline configured with Jenkinsfile and GitHub Webhook` in the description field.
+```yaml
+- General:
+- Description : Simple pipeline configured with Jenkinsfile and GitHub Webhook
 
-- Put a checkmark on `GitHub Project` under `General` section, enter URL of the project repository.
+- Build Triggers:
+    - GitHub hook trigger for GITScm polling
 
-```text
-https://github.com/<your-github-account-name>/jenkinsfile-pipeline-project/
-```
-
-- Put a checkmark on `GitHub hook trigger for GITScm polling` under `Build Triggers` section.
-
-- Go to the `Pipeline` section, and select `Pipeline script from SCM` in the `Definition` field.
-
-- Select `Git` in the `SCM` field.
-
-- Enter URL of the project repository, and let others be default.
-
-```text
-https://github.com/<your-github-account-name>/jenkinsfile-pipeline-project.git
+- Pipeline:
+    Definition:
+        Pipeline script from SCM:
+            Git:
+                Repository URL:
+                    - https://github.com/<your-github-account-name>/jenkinsfile-pipeline-project.git
+                
+                Branches to build: It must be same branch name with your `jenkins-first-webhook-project` Github repository. If your repository's default branch name is "main", then change "master" to "main".
 ```
 
 - Click `apply` and `save`. Note that the script `Jenkinsfile` should be placed under root folder of repo.
@@ -192,7 +189,6 @@ git push
 
   - a Jenkinsfile configured for an automated build on our repo
 
-
 - Create a python file on the `jenkinsfile-pipeline-project` local repository, name it as `pipeline.py`, add coding to print `My first python job which is run within Jenkinsfile.` and save.
 
 ```python
@@ -233,19 +229,23 @@ git push
 
 - Enter `jenkinsfile-pipeline-pollSCM` then select `Pipeline` and click `OK`.
 
-- Enter `This is a pipeline project with pollSCM` in the description field.
+```yaml
+- General:
+- Description : This is a pipeline project with pollSCM
 
-- We will use same github repo project in Part 2 (named as `jenkinsfile-pipeline-project`).
+- Build Triggers:
+    - Poll SCM: * * * * *
 
-- Go to the `Pipeline` section.
-  - for definition, select `Pipeline script from SCM`
-  - for SCM, select `Git`
-    - for `Repository URL`, select `https://github.com/<your-github-account-name>/jenkinsfile-pipeline-project/`, show the `Jenkinsfile` here.
-    - approve that the `Script Path` is `Jenkinsfile`
-- `Save` and `Build Now` and observe the behavior.
+- Pipeline:
+    Definition:
+        `Pipeline script from SCM:
+            Git:
+                Repository URL:
+                    - https://github.com/<your-github-account-name>/jenkinsfile-pipeline-project.git
+                
+                Branches to build: It must be same branch name with your `jenkins-first-webhook-project` Github repository. If your repository's default branch name is "main", then change "master" to "main".
+```
 
-- Go to the the `Configure` and skip to the `Build Triggers` section
-  - Select Poll SCM, and enter `* * * * *` (5 stars)
 - `Save` the configuration.
 
 - Go to the GitHub repo and modify some part in the `Jenkinsfile` and commit.

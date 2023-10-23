@@ -11,7 +11,7 @@ variable "tags" {
 }
 variable "myami" {
   description = "amazon linux 2023"
-  default = "ami-0889a44b331db0194"
+  default = "ami-0df435f331839b2d6"
 }
 variable "instancetype" {
   default = "t2.micro"
