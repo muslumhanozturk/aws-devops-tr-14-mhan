@@ -281,7 +281,7 @@ kubectl get nodes --watch
 
 3. Attach this policy to the IAM Worker Node Role which is already in use.
 
-ww4. Deploy the ```Cluster Autoscaler``` with the following command.
+4. Deploy the ```Cluster Autoscaler``` with the following command.
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
