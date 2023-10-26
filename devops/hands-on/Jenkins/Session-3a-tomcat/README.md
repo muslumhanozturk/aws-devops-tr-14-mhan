@@ -77,14 +77,14 @@ tar.gz (pgp, sha512)
   
 ```bash
 cd /tmp
-wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.8/bin/apache-tomcat-10.1.8.zip
+wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.15/bin/apache-tomcat-10.1.15.zip
 ```
 
 - Unzip tomcat file and move to `/opt`
   
 ```bash
 unzip apache-tomcat-*.zip
-sudo mv apache-tomcat-10.1.8 /opt/tomcat
+sudo mv apache-tomcat-10.1.15 /opt/tomcat
 ```
 
 ## Part 4 - Configure tomcat
