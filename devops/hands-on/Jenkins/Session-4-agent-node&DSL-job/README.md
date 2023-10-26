@@ -111,29 +111,29 @@ wget http://<jenkins_controller_ip>:8080/jnlpJars/agent.jar
 
 Command Agent Launcher
 
-- Go to Jenkins dashboard, click on "Manage Jenkins" from left hand menu.
+- Go to Jenkins dashboard, click on ``Manage Jenkins`` from left hand menu.
 
-- Select "Manage Nodes and Clouds"
+- Select ``Manage Nodes and Clouds``
 
-- Click on "New Node" from left hand menu.
+- Click on ``New Node`` from left hand menu.
 
-- Enter `AgentNode-1` in "Node name" field and select `Permanent Agent`.
+- Enter `AgentNode-1` in ``Node name`` field and select `Permanent Agent`.
 
 - Click `ok` button.
 
 - Enter `This is a linux agent node for jenkins` in the description field.
 
-- "Number of executors" is the maximum number of concurrent builds that Jenkins may perform on this node. Enter `2` in this field.
+- ``Number of executors`` is the maximum number of concurrent builds that Jenkins may perform on this node. Enter `2` in this field.
 
-- An agent needs to have a directory dedicated to Jenkins. Specify the path to this directory on the agent. Enter `/usr/jenkins` in the "Remote root directory" field.
+- An agent needs to have a directory dedicated to Jenkins. Specify the path to this directory on the agent. Enter `/usr/jenkins` in the ``Remote root directory`` field.
 
-- Enter `Linux` in the "Labels" field.
+- Enter `Linux` in the ``Labels`` field.
 
-- Select `Launch agent via execution of command on the controller` from dropdown menu in the "Launch method" field.
+- Select `Launch agent via execution of command on the controller` from dropdown menu in the ``Launch method`` field.
 
-- Enter `ssh -i /var/lib/jenkins/.ssh/<the_key_file> root@<agent_ip> java -jar -Djava.io.tmpdir=/mnt /root/bin/agent.jar` in the "Launch command" field.
+- Enter `ssh -i /var/lib/jenkins/.ssh/<the_key_file> root@<agent_ip> java -jar -Djava.io.tmpdir=/mnt /root/bin/agent.jar` in the ``Launch command`` field.
 
-- Select `Keep this agent online as much as possible` from dropdown menu in the "Availability" field.
+- Select `Keep this agent online as much as possible` from dropdown menu in the ``Availability`` field.
 
 - Click `Save`.
 
@@ -149,9 +149,9 @@ Command Agent Launcher
 
   - Enter `My first simple free style job on agent node` in the description field.
 
-  - Find the `General` section, click "Restrict where this project can be run" and enter `Linux` for "Label Expression"
+  - Find the `General` section, click "Restrict where this project can be run" and enter `Linux` for ``Label Expression``
 
-  - Go to `Build` section and choose "Execute Shell Command" step from `Add build step` dropdown menu.
+  - Go to `Build` section and choose ``Execute Shell Command`` step from `Add build step` dropdown menu.
 
   - Write down just ``echo "Hello World, This is a job for agent node"` to execute shell command, in text area shown.
 
@@ -173,7 +173,7 @@ Command Agent Launcher
 
 - Go to the `Pipeline` section, enter following script, then click `apply` and `save`.
 
-```text
+```groovy
 pipeline {
     agent { label 'Linux' }
     stages {
