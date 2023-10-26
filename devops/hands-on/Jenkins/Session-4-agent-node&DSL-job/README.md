@@ -253,4 +253,4 @@ git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 ```
 
-- Back to the job tab and show the `Last Successful Artifacts : single-module-project.jar`
+- Back to the job tab and show the `Last Successful Artifacts : webapp-runner.jar`
