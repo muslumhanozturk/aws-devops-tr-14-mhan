@@ -20,9 +20,8 @@ systemctl daemon-reload
 systemctl restart jenkins
 curl -SL https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-dnf install -y python3
-dnf install -y python3-pip
-pip3 install --user ansible
-pip3 install --user boto3
+dnf install -y ansible
+dnf install -y pip
+pip install boto3
 wget https://releases.hashicorp.com/terraform/1.6.2/terraform_1.6.2_linux_amd64.zip
 unzip terraform_1.6.2_linux_amd64.zip -d /usr/local/bin
