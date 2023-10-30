@@ -33,7 +33,7 @@ Securtiy Group: "Port 22, 3000, 9090, 9100"
 - [Download the latest release](https://prometheus.io/download/) of Prometheus for linux. Select *.linux-*.tar.gz
 
 ```bash
-wget https://github.com/prometheus/prometheus/releases/download/v2.44.0/prometheus-2.44.0.linux-amd64.tar.gz
+wget https://github.com/prometheus/prometheus/releases/download/v2.47.2/prometheus-2.47.2.linux-amd64.tar.gz
 ```
 
 Extract and run it.
@@ -131,7 +131,7 @@ For more about the expression language, see the [expression language documentati
 - Install and run the Prometheus Node Exporter that is a single static binary. Once you've downloaded it from the Prometheus downloads page extract it, and run it:
 
 ```bash
-wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
+wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
 tar xvfz node_exporter-*.*-amd64.tar.gz
 cd node_exporter-*.*-amd64
 ./node_exporter
@@ -209,7 +209,7 @@ scrape_configs:
 - Select `Red Hat, CentOS, RHEL, and Fedora(64 Bit)` part.
 
 ```bash
-sudo yum install -y https://dl.grafana.com/enterprise/release/grafana-enterprise-9.5.2-1.x86_64.rpm
+sudo yum install -y https://dl.grafana.com/enterprise/release/grafana-enterprise-10.2.0-1.x86_64.rpm
 sudo systemctl start grafana-server.service
 ```
 
@@ -219,27 +219,23 @@ sudo systemctl start grafana-server.service
 
 ### Creating a Prometheus data source
 
-- Click on the "cogwheel" in the sidebar to open the Configuration menu.
+- Click on ``Data Sources``.
 
-- Click on "Data Sources".
-
-- Click on "Add data source".
-
-- Select "Prometheus" as the type.
+- Select ``Prometheus`` as the type.
 
 - Set the appropriate Prometheus server URL (for example, http://localhost:9090/)
 
 - Adjust other data source settings as desired (for example, choosing the right Access method).
 
-- Click "Save & Test" to save the new data source.
+- Click ``Save & Test`` to save the new data source.
 
 ### Creating a Prometheus graph
 
-- Click the graph title, then click "Edit".
+- Click the graph title, then click ``Edit``.
 
-- Under the "Data source" tab, select Prometheus data source.
+- Under the ``Data source`` tab, select Prometheus data source.
 
-- Enter any Prometheus expression into the "Query" field, while using the "Metric" field to lookup metrics via autocompletion.
+- Enter any Prometheus expression into the ``Query`` field, while using the ``Metric`` field to lookup metrics via autocompletion.
 
 - To format the legend names of time series, use the "Legend format" input. For example, to show only the method and status labels of a returned query result, separated by a dash, you could use the legend format string {{method}} - {{status}}.
 
