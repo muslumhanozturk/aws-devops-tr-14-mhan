@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-pv-vol
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/ubuntu/pv-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongo
+  template:
+    metadata:
+      labels:
+        name: mongo
+        app: todoapp
+    spec:
+      containers:
+      - image: mongo:5.0
+        name: mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-storage
+            mountPath: /data/db
+      volumes:
+        #- name: mongo-storage
+        #  hostPath:
+        #    path: /home/ubuntu/pv-data
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  labels:
+    name: mongo
+    app: todoapp
+spec:
+  selector:
+    name: mongo
+  type: ClusterIP
+  ports:
+    - name: db
+      port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: web
+  template:
+    metadata:
+      labels:
+        name: web
+        app: todoapp
+    spec:
+      containers: 
+        - image: clarusway/todo
+          imagePullPolicy: Always
+          name: myweb
+          ports: 
+            - containerPort: 3000
+          env:
+            - name: "DBHOST"
+              value: db-service
+          resources:
+            limits:
+              memory: 500Mi
+              cpu: 100m
+            requests:
+              memory: 250Mi
+              cpu: 80m	
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  labels:
+    name: web
+    app: todoapp
+spec:
+  selector:
+    name: web 
+  type: NodePort
+  ports:
+   - name: http
+     port: 3000
+     targetPort: 3000
+     nodePort: 30001
+     protocol: TCP
+
