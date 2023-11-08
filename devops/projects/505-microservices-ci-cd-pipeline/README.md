@@ -739,7 +739,7 @@ public class PetTest {
 
 ``` bash
 git add .
-git commit -m 'added 3 UTs for customer-service'
+git commit -m 'added 1 UT file for the customer-service'
 git push --set-upstream origin feature/msp-11
 ```
 
