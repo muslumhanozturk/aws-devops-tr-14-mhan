@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: >
+  This Cloudformation Template creates an EC2 Instance with Java-11 and Maven.
+  Amazon Linux 2023 (ami-067d1e60475437da2) will be used as an EC2 Instance with
+  custom security group allowing SSH connections from anywhere on port 22.
+
+Parameters:
+  KeyPairName:
+    Description: Enter the name of your Key Pair for SSH connections.
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must one of the existing EC2 KeyPair
+
+Resources:
+  MavenJavaSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: SG for ssh
+      GroupName: sec-grp-ssh
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Cfn-Sec-Grp
+  EC2Maven:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-067d1e60475437da2
+      InstanceType: t3a.medium
+      KeyName: !Ref KeyPairName
+      SecurityGroupIds:
+        - !Ref MavenJavaSecurityGroup 
+      Tags:
+        -
+          Key: Name
+          Value: !Sub instance of ${AWS::StackName}
+      UserData:
+        Fn::Base64: !Sub |
+          #! /bin/bash
+          yum update -y
+          #Install java
+          yum install java-17-amazon-corretto-devel -y
+          #Install maven
+          cd /home/ec2-user/
+          wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          tar -zxvf $(ls | grep apache-maven-*-bin.tar.gz)
+          rm -rf $(ls | grep apache-maven-*-bin.tar.gz)
+          echo "M2_HOME=/home/ec2-user/$(ls | grep apache-maven)" >> /home/ec2-user/.bash_profile
+          echo 'export PATH=$PATH:$M2_HOME/bin' >> /home/ec2-user/.bash_profile
+          # Install docker
+          yum install docker -y
+          systemctl start docker
+          systemctl enable docker
+          usermod -a -G docker ec2-user
+          # install docker-compose
+          curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
