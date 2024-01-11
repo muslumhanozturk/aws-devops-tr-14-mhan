@@ -589,7 +589,7 @@ git branch feature/msp-9
 git checkout feature/msp-9
 ```
 
-* Set up a Jenkins Server and enable it with `Git`,  `Docker`,  `Docker Compose`,  `AWS CLI v2`, `Python`,  `Ansible` and `Boto3`.  To do so, prepare a [Terraform file for Jenkins Server](./msp-9-jenkins-server-tf-template) with following scripts (jenkins_variables.tf, jenkins-server.tf, jenkins.auto.tf.vars, jenkinsdata.sh) and save them under `infrastructure` folder.
+* Set up a Jenkins Server and enable it with `Git`,  `Docker`,  `Docker Compose`,  `AWS CLI v2`, `Python`,  `Terraform`, `Ansible` and `Boto3`.  To do so, prepare a [Terraform file for Jenkins Server](./msp-9-jenkins-server-tf-template) with following scripts (jenkins_variables.tf, jenkins-server.tf, jenkins.auto.tf.vars, jenkinsdata.sh) and save them under `infrastructure` folder.
 
 ``` bash
 #! /bin/bash
@@ -668,7 +668,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 * Create first admin user.
 
-* Open your Jenkins dashboard and navigate to `Manage Jenkins` >> `Manage Plugins` >> `Available` tab
+* Open your Jenkins dashboard and navigate to `Manage Jenkins` >> `Plugins` >> `Available Plugins` tab
 
 * Search and select `GitHub Integration`,  `Docker`,  `Docker Pipeline`, and `Jacoco` plugins, then click `Install without restart`. Note: No need to install the other `Git plugin` which is already installed can be seen under `Installed` tab.
 
@@ -1778,9 +1778,9 @@ services:
     labels:
       kompose.image-pull-secret: "regcred"
       kompose.service.expose: "{{ .Values.DNS_NAME }}"
+      kompose.service.expose.ingress-class-name: "nginx"
       kompose.service.type: "nodeport"
       kompose.service.nodeport.port: "30001"
-	  kompose.service.expose.ingress-class-name: "nginx"
   tracing-server:
     image: openzipkin/zipkin
     ports:
