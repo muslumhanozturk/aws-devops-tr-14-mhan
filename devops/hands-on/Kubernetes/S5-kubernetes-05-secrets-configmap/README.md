@@ -268,7 +268,7 @@ spec:
           secretKeyRef:
             name: mysecret
             key: password
-  restartPolicy: Never
+  restartPolicy: Never  
 ```
 
 - Update the pod.
@@ -362,7 +362,7 @@ spec:
     targetPort: 8888
     nodePort: 30001    
   selector:
-    app: demo
+    app: demo 
 ```
 
 - See the files and go upper folder.
@@ -577,7 +577,7 @@ kind: ConfigMap
 metadata:
   name: demo-config
 data:
-  GREETING: Merhaba
+  GREETING: Merhaba 
 ```
 
 The environmental variables are directly filled in `configmap.yaml`. They are in capital letters.
@@ -738,7 +738,7 @@ spec:
           name: nginx-config
           items:
           - key: content
-            path: index.html
+            path: index.html 
 ```
 
 - Volume and volume mounting are common ways to place config files inside a container. We are selecting `content` key from `nginx-config` ConfigMap and put it inside the container at path `/usr/share/nginx/html/` with the name `index.html`.
@@ -836,7 +836,7 @@ spec:
             path: index.html
       - name: secret-volume
         secret:
-          secretName: mysecret
+          secretName: mysecret 
 ```
 
 - Check the test folder inside the pod.

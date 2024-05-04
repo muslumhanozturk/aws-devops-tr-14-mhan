@@ -20,7 +20,7 @@ locals {
   name = "clarusway"
   keyname = "clarus"
   instancetype = "t3a.medium"
-  ami = "ami-053b0d53c279acc90"
+  ami = "ami-0c7217cdde317cfec"
 }
 
 resource "aws_instance" "master" {

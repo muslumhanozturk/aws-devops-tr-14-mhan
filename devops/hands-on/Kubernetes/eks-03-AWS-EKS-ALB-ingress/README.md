@@ -12,7 +12,7 @@ At the end of the this hands-on training, students will be able to;
 
 ## Outline
 
-- Part 1 - Updating aws-cli version 2 and Installing kubectl, helm and eksctl on Amazon Linux 2
+- Part 1 - Installing kubectl and eksctl on Amazon Linux 2023
 
 - Part 2 - Creating the Kubernetes Cluster on EKS
 
@@ -28,49 +28,14 @@ At the end of the this hands-on training, students will be able to;
 
 For information on installing or upgrading eksctl, see [Installing or upgrading eksctl.](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl)
 
-## Part 1 - Updating aws-cli version 2 and Installing kubectl, helm and eksctl on Amazon Linux 2
+## Part 1 - Installing kubectl and eksctl on Amazon Linux 2023
 
-## Update aws-cli
-
-- Launch an AWS EC2 instance of Amazon Linux 2 AMI (type t2.micro) with security group allowing SSH.
-
-- Connect to the instance with SSH.
-
-- Update the installed packages and package cache on your instance.
-
-```bash
-sudo yum update -y
-```
-
--   Check the version of aws-cli
-
-```bash
-aws --version
-```
-
-- If the cli version is like `aws-cli/2.9.6`, skip the next step.
-
-- Update the asw-cli version according to the asw documentation (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
-
-```bash
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install --bin-dir /usr/local/bin --install-dir /usr/local/aws-cli --update
-```
-
-- Remove the old version of aws-cli.
-
-```
-sudo rm /usr/bin/aws
-aws --version
-```
-
-### Install git, helm and kubectl
+### Install git and helm
 
 - Install git.
 
 ```bash
-sudo yum install git -y
+sudo dnf install git -y
 ```
 
 - Install helm.
@@ -80,10 +45,22 @@ curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 
 helm version --short
 ```
 
+### Install kubectl
+
+- Launch an AWS EC2 instance of Amazon Linux 2023 AMI with security group allowing SSH.
+
+- Connect to the instance with SSH.
+
+- Update the installed packages and package cache on your instance.
+
+```bash
+sudo dnf update -y
+```
+
 - Download the Amazon EKS vended kubectl binary.
 
 ```bash
-curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.7/2022-06-29/bin/linux/amd64/kubectl
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/linux/amd64/kubectl
 ```
 
 - Apply execute permissions to the binary.
@@ -95,7 +72,7 @@ chmod +x ./kubectl
 - Copy the binary to a folder in your PATH. If you have already installed a version of kubectl, then we recommend creating a $HOME/bin/kubectl and ensuring that $HOME/bin comes first in your $PATH.
 
 ```bash
-mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
 ```
 
 - (Optional) Add the $HOME/bin path to your shell initialization file so that it is configured when you open a shell.
@@ -107,7 +84,7 @@ echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 - After you install kubectl , you can verify its version with the following command:
 
 ```bash
-kubectl version --short --client
+kubectl version --client
 ```
 
 ### Install eksctl
@@ -115,7 +92,13 @@ kubectl version --short --client
 - Download and extract the latest release of eksctl with the following command.
 
 ```bash
-curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+```
+
+- Move and extract the binary to /tmp folder.
+
+```bash
+tar -xzf eksctl_$(uname -s)_amd64.tar.gz -C /tmp && rm eksctl_$(uname -s)_amd64.tar.gz
 ```
 
 - Move the extracted binary to /usr/local/bin.
@@ -132,9 +115,7 @@ eksctl version
 
 ## Part 2 - Creating the Kubernetes Cluster on EKS
 
-- If needed create ssh-key with commnad `ssh-keygen -f ~/.ssh/id_rsa`
-
-- Configure AWS credentials.
+- Configure AWS credentials. Or you can attach `AWS IAM Role` to your EC2 instance.
 
 ```bash
 aws configure
@@ -143,34 +124,36 @@ aws configure
 - Create an EKS cluster via `eksctl`. It will take a while.
 
 ```bash
+eksctl create cluster --region us-east-1 --version 1.29 --zones us-east-1a,us-east-1b,us-east-1c --node-type t3a.medium --nodes 2 --nodes-min 2 --nodes-max 3 --name cw-cluster
+```
 
+### Alternative way (Including ssh connect to worker node)
+
+- If needed create ssh-key with command `ssh-keygen -f ~/.ssh/id_rsa`.
+
+```bash
 eksctl create cluster \
- --name cwcluster \
- --version 1.23 \
+ --name cw-cluster \
  --region us-east-1 \
+ --version 1.29 \
  --zones us-east-1a,us-east-1b,us-east-1c \
  --nodegroup-name my-nodes \
  --node-type t3a.medium \
- --nodes 1 \
- --nodes-min 1 \
- --nodes-max 2 \
+ --nodes 2 \
+ --nodes-min 2 \
+ --nodes-max 3 \
  --ssh-access \
  --ssh-public-key  ~/.ssh/id_rsa.pub \
  --managed
-
-or 
-
-eksctl create cluster --region us-east-1  --zones us-east-1a,us-east-1b,us-east-1c --node-type t3a.medium --nodes 1 --nodes-min 1 --nodes-max 2 --name cwcluster
-
 ```
 
-- Note that the default value for node-type is m5.large.
+- Explain the deault values. 
 
 ```bash
 eksctl create cluster --help
 ```
 
-- Show the aws `eks service` on aws management console and explain `eksctl-mycluster-cluster` stack on `cloudformation service`.
+- Show the aws `eks service` on aws management console and explain `eksctl-my-cluster-cluster` stack on `cloudformation service`.
 
 ## Part 3 - Ingress and AWS LoadBalancer Controller (ALB)
 
@@ -179,7 +162,7 @@ eksctl create cluster --help
 - Download an IAM policy for the AWS Load Balancer Controller that allows it to make calls to AWS APIs on your behalf. 
 
 ```bash
-curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.4/docs/install/iam_policy.json
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/install/iam_policy.json
 ```
 
 - Create an IAM policy using the policy downloaded in the previous step. 
@@ -195,7 +178,7 @@ aws iam create-policy \
 
 ```bash
 eksctl create iamserviceaccount \
-  --cluster=cwcluster \
+  --cluster=cw-cluster \
   --region=us-east-1 \
   --namespace=kube-system \
   --name=aws-load-balancer-controller \
@@ -209,20 +192,20 @@ eksctl create iamserviceaccount \
 ```bash
 2022-05-09 07:50:11 [ℹ]  eksctl version 0.96.0
 2022-05-09 07:50:11 [ℹ]  using region us-east-2
-2022-05-09 07:50:12 [!]  no IAM OIDC provider associated with cluster, try 'eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cwcluster'
+2022-05-09 07:50:12 [!]  no IAM OIDC provider associated with cluster, try 'eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cw-cluster'
 ```
 
 - Solution to this error provide the command below:
 
 ```bash
-eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cwcluster --approve
+eksctl utils associate-iam-oidc-provider --region=us-east-1 --cluster=cw-cluster --approve
 ```
 
 - You shoulD provide the last command again in order to create IAM service account:
 
 ```bash
 eksctl create iamserviceaccount \
-  --cluster=cwcluster \
+  --cluster=cw-cluster \
   --region=us-east-1 \
   --namespace=kube-system \
   --name=aws-load-balancer-controller \
@@ -240,7 +223,7 @@ helm repo update
 
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
-  --set clusterName=cwcluster \
+  --set clusterName=cw-cluster \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller
 ```
@@ -391,7 +374,7 @@ metadata:
     alb.ingress.kubernetes.io/healthy-threshold-count: '2'
     alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
     # To use certificate add annotations below.
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:046402772087:certificate/dae75cd6-8d82-420c-bed1-1ea132ec3d37
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:046402772087:certificate/dae75cd6-8d82-420c-bed1-1ea132ec3d37   # change this line
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
 
@@ -464,6 +447,6 @@ ingress-clarusshop   <none>   clarusshop.clarusway.us   k8s-default-ingressc-38a
 ```bash
 eksctl get cluster
 NAME            REGION
-cwcluster       us-east-1
-eksctl delete cluster cwcluster
+cw-cluster       us-east-1
+eksctl delete cluster cw-cluster
 ```

@@ -251,8 +251,6 @@ CMD python ./to-do-api.py
 - Create a file called `docker-compose.yml` in your project folder with following setup.
 
 ```yaml
-version: "3.7"
-
 services:
     database:
         image: mysql:5.7

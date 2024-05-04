@@ -140,7 +140,6 @@ The redis service uses a public Redis image pulled from the Docker Hub registry.
 ```
 
 ```yaml
-version: "3"
 services:
   web:
     build: .
